@@ -11,6 +11,7 @@ import makerjs from "makerjs";
 import { Switch } from "@/core/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/core/ui/select";
 import debounce from "lodash/debounce";
+import { toast } from "sonner";
 
 type FillRule = 'nonzero' | 'evenodd';
 
@@ -145,6 +146,7 @@ export default function Home() {
     a.download = `${text}.dxf`;
     a.click();
     URL.revokeObjectURL(url);
+    toast.success("DXF 文件下载成功");
   };
 
   // 当 selectedFont 变化时，自动切换到 regular 变体
@@ -283,7 +285,10 @@ export default function Home() {
           <Label htmlFor="svg-code">SVG 代码</Label>
           <Textarea id="svg-code" className="w-full max-w-xl h-40" readOnly value={svgString} />
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => {navigator.clipboard.writeText(svgString)}}>复制代码</Button>
+            <Button variant="outline" onClick={() => {
+              navigator.clipboard.writeText(svgString);
+              toast.success("SVG 代码已复制到剪贴板");
+            }}>复制代码</Button>
             <Button onClick={() => {
               const blob = new Blob([svgString], { type: 'image/svg+xml' });
               const url = URL.createObjectURL(blob);
@@ -292,6 +297,7 @@ export default function Home() {
               a.download = 'text.svg';
               a.click();
               URL.revokeObjectURL(url);
+              toast.success("SVG 文件下载成功");
             }}>下载 SVG</Button>
             <Button variant="outline" onClick={downloadDxf}>下载 DXF</Button>
           </div>
