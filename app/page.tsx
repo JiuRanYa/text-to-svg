@@ -15,7 +15,7 @@ type FillRule = 'nonzero' | 'evenodd';
 
 export default function Home() {
   const [selectedFont, setSelectedFont] = useState<GoogleFontItem | null>(null);
-  const [selectedVariant, setSelectedVariant] = useState<string>("");
+  const [selectedVariant, setSelectedVariant] = useState<string>("regular");
   const [text, setText] = useState("ToolHub");
   const [fontSize, setFontSize] = useState(100);
   const [stroke, setStroke] = useState("#000000");
@@ -37,9 +37,13 @@ export default function Home() {
 
   // 1. 直接用 menu 字段作为字体文件 URL
   useEffect(() => {
-    if (!selectedFont || !selectedFont.menu) return;
-    setFontUrl(selectedFont.menu);
-  }, [selectedFont]);
+    if (!selectedFont) return;
+    let url = selectedFont.menu;
+    if (selectedVariant && selectedFont.files && selectedFont.files[selectedVariant]) {
+      url = selectedFont.files[selectedVariant];
+    }
+    setFontUrl(url);
+  }, [selectedFont, selectedVariant]);
 
   // 2. 用 makerjs 生成 SVG
   useEffect(() => {
@@ -116,6 +120,16 @@ export default function Home() {
     a.click();
     URL.revokeObjectURL(url);
   };
+
+  // 当 selectedFont 变化时，自动切换到 regular 变体
+  useEffect(() => {
+    if (!selectedFont) return;
+    if (selectedFont.variants && selectedFont.variants.includes("regular")) {
+      setSelectedVariant("regular");
+    } else if (selectedFont.variants && selectedFont.variants.length > 0) {
+      setSelectedVariant(selectedFont.variants[0]);
+    }
+  }, [selectedFont]);
 
   return (
     <div className="flex min-h-screen">
