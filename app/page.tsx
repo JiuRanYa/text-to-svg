@@ -12,6 +12,7 @@ import { Switch } from '@/core/ui/switch'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/ui/select'
 import debounce from 'lodash/debounce'
 import { toast } from 'sonner'
+import { ScrollArea } from '@/core/ui/scroll-area'
 
 type FillRule = 'nonzero' | 'evenodd';
 
@@ -203,126 +204,130 @@ export default function Home() {
   }, [fontList, searchTerm])
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen overflow-hidden">
       {/* 左侧配置区 */}
-      <aside className="w-full max-w-sm bg-muted p-6 flex flex-col gap-4 border-r">
-        <h2 className="text-lg font-bold mb-2">配置</h2>
-        <GoogleFontSelector 
-          value={selectedFont?.family || ''} 
-          onChange={setSelectedFont}
-          fontList={fontList}
-          isLoading={isLoading}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-        />
-        
-        {selectedFont && (
-          <div className="flex flex-col gap-2">
-            <Label>字体变体</Label>
-            <Select value={selectedVariant} onValueChange={setSelectedVariant}>
-              <SelectTrigger>
-                <SelectValue placeholder="选择字体变体" />
-              </SelectTrigger>
-              <SelectContent>
-                {selectedFont.variants?.map((variant: string) => (
-                  <SelectItem key={variant} value={variant}>
-                    {variant}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+      <aside className="w-full max-w-sm bg-muted p-0 flex flex-col gap-0 border-r h-screen">
+        <ScrollArea className="h-screen p-6">
+          <div className="flex flex-col gap-4">
+            <h2 className="text-lg font-bold mb-2">配置</h2>
+            <GoogleFontSelector 
+              value={selectedFont?.family || ''} 
+              onChange={setSelectedFont}
+              fontList={fontList}
+              isLoading={isLoading}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+            />
+            
+            {selectedFont && (
+              <div className="flex flex-col gap-2">
+                <Label>字体变体</Label>
+                <Select value={selectedVariant} onValueChange={setSelectedVariant}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="选择字体变体" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {selectedFont.variants?.map((variant: string) => (
+                      <SelectItem key={variant} value={variant}>
+                        {variant}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="text">文本</Label>
+              <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder="请输入要转换的文字" />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="size">字号</Label>
+              <Input id="size" type="number" value={fontSize} onChange={e => setFontSize(Number(e.target.value))} />
+            </div>
+
+            
+            <div className="flex flex-col gap-6 my-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="union">合并路径</Label>
+                <Switch id="union" checked={union} onCheckedChange={setUnion} />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <Label htmlFor="filled">填充</Label>
+                <Switch id="filled" checked={filled} onCheckedChange={setFilled} />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <Label htmlFor="kerning">字距调整</Label>
+                <Switch id="kerning" checked={kerning} onCheckedChange={setKerning} />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <Label htmlFor="separate">分离路径</Label>
+                <Switch id="separate" checked={separate} onCheckedChange={setSeparate} />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="bezier-accuracy">贝塞尔曲线精度</Label>
+              <Input 
+                id="bezier-accuracy" 
+                type="number" 
+                step="0.1"
+                min="0.1"
+                max="1"
+                value={bezierAccuracy} 
+                onChange={e => setBezierAccuracy(Number(e.target.value))} 
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="fill-rule">填充规则</Label>
+              <Select value={fillRule} onValueChange={(value: FillRule) => setFillRule(value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="选择填充规则" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="nonzero">nonzero</SelectItem>
+                  <SelectItem value="evenodd">evenodd</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="stroke">描边颜色</Label>
+              <Input id="stroke" type="color" value={stroke} onChange={e => setStroke(e.target.value)} />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="stroke-width">描边宽度</Label>
+              <Input id="stroke-width" type="text" value={strokeWidth} onChange={e => setStrokeWidth(e.target.value)} />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="fill">填充颜色</Label>
+              <Input id="fill" type="color" value={fill} onChange={e => setFill(e.target.value)} />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="dxf-units">DXF 单位</Label>
+              <Select value={dxfUnits} onValueChange={setDxfUnits}>
+                <SelectTrigger>
+                  <SelectValue placeholder="选择单位" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.values(makerjs.unitType).map((unit) => (
+                    <SelectItem key={unit} value={unit}>
+                      {unit}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-        )}
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="text">文本</Label>
-          <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder="请输入要转换的文字" />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="size">字号</Label>
-          <Input id="size" type="number" value={fontSize} onChange={e => setFontSize(Number(e.target.value))} />
-        </div>
-
-        
-        <div className="flex flex-col gap-6 my-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="union">合并路径</Label>
-            <Switch id="union" checked={union} onCheckedChange={setUnion} />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <Label htmlFor="filled">填充</Label>
-            <Switch id="filled" checked={filled} onCheckedChange={setFilled} />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <Label htmlFor="kerning">字距调整</Label>
-            <Switch id="kerning" checked={kerning} onCheckedChange={setKerning} />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <Label htmlFor="separate">分离路径</Label>
-            <Switch id="separate" checked={separate} onCheckedChange={setSeparate} />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="bezier-accuracy">贝塞尔曲线精度</Label>
-          <Input 
-            id="bezier-accuracy" 
-            type="number" 
-            step="0.1"
-            min="0.1"
-            max="1"
-            value={bezierAccuracy} 
-            onChange={e => setBezierAccuracy(Number(e.target.value))} 
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="fill-rule">填充规则</Label>
-          <Select value={fillRule} onValueChange={(value: FillRule) => setFillRule(value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="选择填充规则" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="nonzero">nonzero</SelectItem>
-              <SelectItem value="evenodd">evenodd</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="stroke">描边颜色</Label>
-          <Input id="stroke" type="color" value={stroke} onChange={e => setStroke(e.target.value)} />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="stroke-width">描边宽度</Label>
-          <Input id="stroke-width" type="text" value={strokeWidth} onChange={e => setStrokeWidth(e.target.value)} />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="fill">填充颜色</Label>
-          <Input id="fill" type="color" value={fill} onChange={e => setFill(e.target.value)} />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="dxf-units">DXF 单位</Label>
-          <Select value={dxfUnits} onValueChange={setDxfUnits}>
-            <SelectTrigger>
-              <SelectValue placeholder="选择单位" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.values(makerjs.unitType).map((unit) => (
-                <SelectItem key={unit} value={unit}>
-                  {unit}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        </ScrollArea>
       </aside>
 
       {/* 右侧预览区 */}
