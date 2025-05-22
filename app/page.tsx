@@ -54,9 +54,8 @@ export default function Home() {
 
   const recommendTextFonts = [
     'Roboto',
-    'Arial',
-    'Helvetica',
-    'Verdana',
+    'Varela Round',
+    'Noto Sans Nabataean',
   ]
   // 使用 useMemo 缓存字体加载
   const fontUrl = useMemo(() => {
@@ -194,14 +193,6 @@ export default function Home() {
         setIsLoading(false)
       })
   }, [])
-
-  const filteredFonts = useMemo(() => {
-    return fontList
-      .filter(font => 
-        font.family.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      .sort((a, b) => a.family.localeCompare(b.family))
-  }, [fontList, searchTerm])
 
   return (
     <div className="flex min-h-screen overflow-hidden">
