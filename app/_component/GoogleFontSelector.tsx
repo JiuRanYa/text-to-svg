@@ -1,7 +1,6 @@
-"use client";
-import { useMemo } from "react";
-import { Label } from "@/core/ui/label";
-import { Input } from "@/core/ui/input";
+'use client'
+import { useMemo } from 'react'
+import { Label } from '@/core/ui/label'
 
 export interface GoogleFontItem {
   family: string;
@@ -25,8 +24,8 @@ export function GoogleFontSelector({ value, onChange, fontList, isLoading, searc
       .filter(font => 
         font.family.toLowerCase().includes(searchTerm.toLowerCase())
       )
-      .sort((a, b) => a.family.localeCompare(b.family));
-  }, [fontList, searchTerm]);
+      .sort((a, b) => a.family.localeCompare(b.family))
+  }, [fontList, searchTerm])
 
   return (
     <div className="flex flex-col gap-2">
@@ -35,14 +34,14 @@ export function GoogleFontSelector({ value, onChange, fontList, isLoading, searc
         id="google-font"
         value={value}
         onChange={(e) => {
-          const font = fontList.find((f) => f.family === e.target.value) || null;
-          onChange(font);
+          const font = fontList.find((f) => f.family === e.target.value) || null
+          onChange(font)
         }}
         disabled={isLoading}
         className="w-full p-2 border rounded-md"
         style={{ fontFamily: value }}
       >
-        <option value="">{isLoading ? "加载中..." : "请选择字体"}</option>
+        <option value="">{isLoading ? '加载中...' : '请选择字体'}</option>
         {filteredFonts.map((font) => (
           <option 
             key={font.family} 
@@ -54,5 +53,5 @@ export function GoogleFontSelector({ value, onChange, fontList, isLoading, searc
         ))}
       </select>
     </div>
-  );
+  )
 }
