@@ -41,6 +41,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('')
 
   const recommendFonts = [
+    'Protest Riot',
     'Oooh Baby', 
     'Pacifico', 
     'Sofadi One',
@@ -50,6 +51,12 @@ export default function Home() {
     'Poppins',
   ]
 
+  const recommendTextFonts = [
+    'Roboto',
+    'Arial',
+    'Helvetica',
+    'Verdana',
+  ]
   // 使用 useMemo 缓存字体加载
   const fontUrl = useMemo(() => {
     if (!selectedFont) return null
@@ -360,8 +367,24 @@ export default function Home() {
         {/* 推荐字体区 */}
         <div className="w-full max-w-5xl mt-6 bg-gray-50 border rounded-lg p-4 shadow-sm">
           <h3 className="text-base font-semibold mb-3">推荐网站 Logo 字体</h3>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 mb-6">
             {recommendFonts.map(family => (
+              <button
+                key={family}
+                className={'px-4 py-2 rounded border hover:bg-muted transition font-bold'}
+                style={{ fontFamily: family, background: selectedFont?.family === family ? '#e0e7ff' : undefined }}
+                onClick={() => {
+                  const fontObj = fontList.find(f => f.family === family)
+                  if (fontObj) setSelectedFont(fontObj)
+                }}
+              >
+                {family}
+              </button>
+            ))}
+          </div>
+          <h3 className="text-base font-semibold mb-3">推荐文本字体</h3>
+          <div className="flex flex-wrap gap-3">
+            {recommendTextFonts.map(family => (
               <button
                 key={family}
                 className={'px-4 py-2 rounded border hover:bg-muted transition font-bold'}
