@@ -244,24 +244,27 @@ export default function Home() {
           <Input id="size" type="number" value={fontSize} onChange={e => setFontSize(Number(e.target.value))} />
         </div>
 
-        <div className="flex items-center justify-between">
-          <Label htmlFor="union">合并路径</Label>
-          <Switch id="union" checked={union} onCheckedChange={setUnion} />
-        </div>
+        
+        <div className="flex flex-col gap-6 my-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="union">合并路径</Label>
+            <Switch id="union" checked={union} onCheckedChange={setUnion} />
+          </div>
 
-        <div className="flex items-center justify-between">
-          <Label htmlFor="filled">填充</Label>
-          <Switch id="filled" checked={filled} onCheckedChange={setFilled} />
-        </div>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="filled">填充</Label>
+            <Switch id="filled" checked={filled} onCheckedChange={setFilled} />
+          </div>
 
-        <div className="flex items-center justify-between">
-          <Label htmlFor="kerning">字距调整</Label>
-          <Switch id="kerning" checked={kerning} onCheckedChange={setKerning} />
-        </div>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="kerning">字距调整</Label>
+            <Switch id="kerning" checked={kerning} onCheckedChange={setKerning} />
+          </div>
 
-        <div className="flex items-center justify-between">
-          <Label htmlFor="separate">分离路径</Label>
-          <Switch id="separate" checked={separate} onCheckedChange={setSeparate} />
+          <div className="flex items-center justify-between">
+            <Label htmlFor="separate">分离路径</Label>
+            <Switch id="separate" checked={separate} onCheckedChange={setSeparate} />
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">
