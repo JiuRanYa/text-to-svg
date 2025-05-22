@@ -47,16 +47,14 @@ export default function Home() {
   // 使用 useCallback 和 debounce 优化字体加载
   const loadFont = useCallback(
     debounce((url: string) => {
-      setLoadingFont(true);
       opentype.load(url, (err: Error | null, font: opentype.Font | null) => {
-        setLoadingFont(false);
         if (!err && font) {
           setCurrentFont(font);
         } else {
           setCurrentFont(null);
         }
       });
-    }, 300),
+    }, 100),
     []
   );
 
