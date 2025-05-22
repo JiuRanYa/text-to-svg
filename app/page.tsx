@@ -123,8 +123,10 @@ export default function Home() {
 
   // 监听所有可能影响 SVG 生成的参数变化
   useEffect(() => {
-    generateSvg();
-  }, [generateSvg]);
+    if (!loadingFont) {
+      generateSvg();
+    }
+  }, [generateSvg, loadingFont]);
 
   // 3. 生成 SVG 字符串
   const svgString = useMemo(() => {
