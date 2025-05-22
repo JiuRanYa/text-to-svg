@@ -5,11 +5,12 @@ import { Button } from "@/core/ui/button";
 import { Textarea } from "@/core/ui/textarea";
 import { Label } from "@/core/ui/label";
 import { GoogleFontSelector, GoogleFontItem } from "./_component/GoogleFontSelector";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import opentype from "opentype.js";
 import makerjs from "makerjs";
 import { Switch } from "@/core/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/core/ui/select";
+import debounce from "lodash/debounce";
 
 type FillRule = 'nonzero' | 'evenodd';
 
@@ -23,7 +24,7 @@ export default function Home() {
   const [fill, setFill] = useState("#000000");
   const [svgPath, setSvgPath] = useState<string>("");
   const [loadingFont, setLoadingFont] = useState(false);
-  const [currentFont, setCurrentFont] = useState<any>(null);
+  const [currentFont, setCurrentFont] = useState<opentype.Font | null>(null);
   
   // 新增配置项
   const [union, setUnion] = useState(true);
@@ -34,64 +35,96 @@ export default function Home() {
   const [fillRule, setFillRule] = useState<FillRule>("nonzero");
   const [dxfUnits, setDxfUnits] = useState("mm");
 
-  // 只在字体或变体变化时加载字体
-  useEffect(() => {
-    if (!selectedFont) return;
-    let url = selectedFont.menu;
+  // 使用 useMemo 缓存字体加载
+  const fontUrl = useMemo(() => {
+    if (!selectedFont) return null;
     if (selectedVariant && selectedFont.files && selectedFont.files[selectedVariant]) {
-      url = selectedFont.files[selectedVariant];
+      return selectedFont.files[selectedVariant];
     }
-    setLoadingFont(true);
-    opentype.load(url, (err: any, font: any) => {
-      setLoadingFont(false);
-      if (!err && font) {
-        setCurrentFont(font);
-      } else {
-        setCurrentFont(null);
-      }
-    });
+    return selectedFont.menu;
   }, [selectedFont, selectedVariant]);
 
-  // 只要 currentFont 或参数变化就生成 SVG
+  // 使用 useCallback 和 debounce 优化字体加载
+  const loadFont = useCallback(
+    debounce((url: string) => {
+      setLoadingFont(true);
+      opentype.load(url, (err: Error | null, font: opentype.Font | null) => {
+        setLoadingFont(false);
+        if (!err && font) {
+          setCurrentFont(font);
+        } else {
+          setCurrentFont(null);
+        }
+      });
+    }, 300),
+    []
+  );
+
+  // 只在字体 URL 变化时加载字体
   useEffect(() => {
-    if (!currentFont || !text) {
-      setSvgPath("");
-      return;
-    }
-    // 使用 makerjs 生成文本模型
-    const textModel = new makerjs.models.Text(
-      currentFont,
-      text,
-      fontSize,
-      union,
-      false,
-      bezierAccuracy,
-      { kerning }
-    );
-    if (separate) {
-      for (const i in textModel.models) {
-        textModel.models[i].layer = i;
+    if (!fontUrl) return;
+    loadFont(fontUrl);
+  }, [fontUrl, loadFont]);
+
+  // 使用 useCallback 和 debounce 优化 SVG 生成
+  const generateSvg = useCallback(
+    debounce(() => {
+      if (!currentFont || !text) {
+        setSvgPath("");
+        return;
       }
-    }
-    // 生成 SVG
-    const svg = makerjs.exporter.toSVG(textModel, {
-      fill: filled ? fill : undefined,
-      stroke: stroke,
-      strokeWidth: strokeWidth,
-      fillRule: fillRule,
-      scalingStroke: true,
-    });
-    // 生成 DXF
-    const dxf = makerjs.exporter.toDXF(textModel, { 
-      units: dxfUnits,
-      usePOLYLINE: true 
-    });
-    setSvgPath(svg);
-    // 保存 DXF 数据到 data 属性
-    const svgElement = document.createElement('div');
-    svgElement.innerHTML = svg;
-    svgElement.setAttribute('data-dxf', dxf);
-  }, [currentFont, text, fontSize, union, filled, kerning, separate, bezierAccuracy, fill, stroke, strokeWidth, fillRule, dxfUnits]);
+      
+      try {
+        // 使用 makerjs 生成文本模型
+        const textModel = new makerjs.models.Text(
+          currentFont,
+          text,
+          fontSize,
+          union,
+          false,
+          bezierAccuracy,
+          { kerning }
+        );
+        
+        if (separate) {
+          for (const i in textModel.models) {
+            textModel.models[i].layer = i;
+          }
+        }
+        
+        // 生成 SVG
+        const svg = makerjs.exporter.toSVG(textModel, {
+          fill: filled ? fill : undefined,
+          stroke: stroke,
+          strokeWidth: strokeWidth,
+          fillRule: fillRule,
+          scalingStroke: true,
+        });
+        
+        // 生成 DXF
+        const dxf = makerjs.exporter.toDXF(textModel, { 
+          units: dxfUnits,
+          usePOLYLINE: true 
+        });
+        
+        // 保存 DXF 数据到 data 属性
+        const svgElement = document.createElement('div');
+        svgElement.innerHTML = svg;
+        svgElement.setAttribute('data-dxf', dxf);
+        
+        setSvgPath(svg);
+      } catch (error) {
+        console.error('Error generating SVG:', error);
+        setSvgPath("");
+      }
+    }, 300),
+    [currentFont, text, fontSize, union, filled, kerning, separate, bezierAccuracy, fill, stroke, strokeWidth, fillRule, dxfUnits]
+  );
+
+  // 监听所有可能影响 SVG 生成的参数变化
+  useEffect(() => {
+    generateSvg();
+  }, [generateSvg]);
 
   // 3. 生成 SVG 字符串
   const svgString = useMemo(() => {
