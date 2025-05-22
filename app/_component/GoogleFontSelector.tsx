@@ -1,9 +1,7 @@
 "use client";
-import { useEffect, useState, useMemo } from "react";
+import { useMemo } from "react";
 import { Label } from "@/core/ui/label";
 import { Input } from "@/core/ui/input";
-
-const GOOGLE_FONTS_API_KEY = "AIzaSyAOES8EmKhuJEnsn9kS1XKBpxxp-TgN8Jc";
 
 export interface GoogleFontItem {
   family: string;
@@ -12,30 +10,16 @@ export interface GoogleFontItem {
   files?: Record<string, string>;
 }
 
-interface GoogleFontSelectorProps {
+export interface GoogleFontSelectorProps {
   value: string;
   onChange: (font: GoogleFontItem | null) => void;
+  fontList: GoogleFontItem[];
+  isLoading: boolean;
+  searchTerm: string;
+  setSearchTerm: (v: string) => void;
 }
 
-export function GoogleFontSelector({ value, onChange }: GoogleFontSelectorProps) {
-  const [fontList, setFontList] = useState<GoogleFontItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  useEffect(() => {
-    setIsLoading(true);
-    fetch(
-      `https://www.googleapis.com/webfonts/v1/webfonts?key=${GOOGLE_FONTS_API_KEY}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setFontList(data.items || []);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
-
+export function GoogleFontSelector({ value, onChange, fontList, isLoading, searchTerm, setSearchTerm }: GoogleFontSelectorProps) {
   const filteredFonts = useMemo(() => {
     return fontList
       .filter(font => 

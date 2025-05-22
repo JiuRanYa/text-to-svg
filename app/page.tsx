@@ -33,8 +33,12 @@ export default function Home() {
   const [kerning, setKerning] = useState(true);
   const [separate, setSeparate] = useState(false);
   const [bezierAccuracy, setBezierAccuracy] = useState(0.5);
-  const [fillRule, setFillRule] = useState<FillRule>("nonzero");
+  const [fillRule, setFillRule] = useState<FillRule>("evenodd");
   const [dxfUnits, setDxfUnits] = useState("mm");
+
+  const [fontList, setFontList] = useState<GoogleFontItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // 使用 useMemo 缓存字体加载
   const fontUrl = useMemo(() => {
@@ -159,12 +163,41 @@ export default function Home() {
     }
   }, [selectedFont]);
 
+  useEffect(() => {
+    setIsLoading(true);
+    fetch(
+      `https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAOES8EmKhuJEnsn9kS1XKBpxxp-TgN8Jc`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setFontList(data.items || []);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  const filteredFonts = useMemo(() => {
+    return fontList
+      .filter(font => 
+        font.family.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => a.family.localeCompare(b.family));
+  }, [fontList, searchTerm]);
+
   return (
     <div className="flex min-h-screen">
       {/* 左侧配置区 */}
       <aside className="w-full max-w-sm bg-muted p-6 flex flex-col gap-4 border-r">
         <h2 className="text-lg font-bold mb-2">配置</h2>
-        <GoogleFontSelector value={selectedFont?.family || ""} onChange={setSelectedFont} />
+        <GoogleFontSelector 
+          value={selectedFont?.family || ""} 
+          onChange={setSelectedFont}
+          fontList={fontList}
+          isLoading={isLoading}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+        />
         
         {selectedFont && (
           <div className="flex flex-col gap-2">
@@ -273,33 +306,64 @@ export default function Home() {
       </aside>
 
       {/* 右侧预览区 */}
-      <main className="flex-1 flex flex-col items-center justify-start p-8 gap-6">
-        <h2 className="text-lg font-bold mb-2">SVG 预览</h2>
-        <div className="w-full flex flex-col items-center gap-4">
+      <main className="flex-1 flex flex-col items-center justify-start p-8 gap-8">
+        {/* 标题行：SVG预览 和 SVG代码 */}
+        <div className="w-full max-w-5xl flex flex-row gap-6 mb-1">
+          <div className="flex-1 flex items-center">
+            <h2 className="text-lg font-bold mb-0">SVG 预览</h2>
+          </div>
+          <div className="flex-1 flex items-center">
+            <h2 className="text-lg font-bold mb-0">SVG 代码</h2>
+          </div>
+        </div>
+        {/* 上区块：SVG预览和代码 */}
+        <div className="w-full max-w-5xl flex flex-row gap-6">
           {/* SVG 预览 */}
-          <div className="bg-white border rounded w-full max-w-xl h-40 flex items-center justify-center overflow-auto">
+          <div className="flex-1 bg-white border rounded-lg h-48 flex items-center justify-center overflow-auto shadow-sm">
             {loadingFont ? <span className="text-gray-400">字体加载中...</span> : (
               svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">请输入内容</span>
             )}
           </div>
-          <Label htmlFor="svg-code">SVG 代码</Label>
-          <Textarea id="svg-code" className="w-full max-w-xl h-40" readOnly value={svgString} />
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => {
-              navigator.clipboard.writeText(svgString);
-              toast.success("SVG 代码已复制到剪贴板");
-            }}>复制代码</Button>
-            <Button onClick={() => {
-              const blob = new Blob([svgString], { type: 'image/svg+xml' });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = 'text.svg';
-              a.click();
-              URL.revokeObjectURL(url);
-              toast.success("SVG 文件下载成功");
-            }}>下载 SVG</Button>
-            <Button variant="outline" onClick={downloadDxf}>下载 DXF</Button>
+          {/* SVG 代码 */}
+          <div className="flex-1 flex flex-col gap-2">
+            <Textarea id="svg-code" className="w-full h-48 rounded" readOnly value={svgString} />
+          </div>
+        </div>
+        {/* 操作按钮 */}
+        <div className="w-full max-w-5xl flex flex-row gap-2 justify-end">
+          <Button variant="outline" onClick={() => {
+            navigator.clipboard.writeText(svgString);
+            toast.success("SVG 代码已复制到剪贴板");
+          }}>复制代码</Button>
+          <Button onClick={() => {
+            const blob = new Blob([svgString], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'text.svg';
+            a.click();
+            URL.revokeObjectURL(url);
+            toast.success("SVG 文件下载成功");
+          }}>下载 SVG</Button>
+          <Button variant="outline" onClick={downloadDxf}>下载 DXF</Button>
+        </div>
+        {/* 推荐字体区 */}
+        <div className="w-full max-w-5xl mt-6 bg-gray-50 border rounded-lg p-4 shadow-sm">
+          <h3 className="text-base font-semibold mb-3">推荐网站 Logo 字体</h3>
+          <div className="flex flex-wrap gap-3">
+            {["Montserrat", "Roboto", "Lobster", "Pacifico", "Oswald", "Bebas Neue", "Playfair Display", "Raleway", "Poppins", "Fira Sans"].map(family => (
+              <button
+                key={family}
+                className={`px-4 py-2 rounded border hover:bg-muted transition font-bold`}
+                style={{ fontFamily: family, background: selectedFont?.family === family ? '#e0e7ff' : undefined }}
+                onClick={() => {
+                  const fontObj = fontList.find(f => f.family === family);
+                  if (fontObj) setSelectedFont(fontObj);
+                }}
+              >
+                {family}
+              </button>
+            ))}
           </div>
         </div>
       </main>
