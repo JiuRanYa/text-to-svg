@@ -5,13 +5,19 @@ import { Label } from "@/core/ui/label";
 
 const GOOGLE_FONTS_API_KEY = "AIzaSyAOES8EmKhuJEnsn9kS1XKBpxxp-TgN8Jc";
 
+export interface GoogleFontItem {
+  family: string;
+  menu: string;
+  [key: string]: any;
+}
+
 interface GoogleFontSelectorProps {
   value: string;
-  onChange: (font: string) => void;
+  onChange: (font: GoogleFontItem | null) => void;
 }
 
 export function GoogleFontSelector({ value, onChange }: GoogleFontSelectorProps) {
-  const [fontList, setFontList] = useState<{ family: string }[]>([]);
+  const [fontList, setFontList] = useState<GoogleFontItem[]>([]);
 
   useEffect(() => {
     fetch(
@@ -26,7 +32,13 @@ export function GoogleFontSelector({ value, onChange }: GoogleFontSelectorProps)
   return (
     <div className="flex flex-col gap-2">
       <Label htmlFor="google-font">Google Font</Label>
-      <Select value={value} onValueChange={onChange}>
+      <Select
+        value={value}
+        onValueChange={(family) => {
+          const font = fontList.find((f) => f.family === family) || null;
+          onChange(font);
+        }}
+      >
         <SelectTrigger id="google-font">
           <SelectValue placeholder="请选择字体" />
         </SelectTrigger>

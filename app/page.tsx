@@ -4,51 +4,63 @@ import { Input } from "@/core/ui/input";
 import { Button } from "@/core/ui/button";
 import { Textarea } from "@/core/ui/textarea";
 import { Label } from "@/core/ui/label";
-import { GoogleFontSelector } from "./_component/GoogleFontSelector";
+import { GoogleFontSelector, GoogleFontItem } from "./_component/GoogleFontSelector";
 import { useState, useEffect, useMemo } from "react";
+import opentype from "opentype.js";
 
 export default function Home() {
-  const [selectedFont, setSelectedFont] = useState("");
+  const [selectedFont, setSelectedFont] = useState<GoogleFontItem | null>(null);
   const [text, setText] = useState("ToolHub");
   const [fontSize, setFontSize] = useState(100);
   const [stroke, setStroke] = useState("#000000");
   const [strokeWidth, setStrokeWidth] = useState("0.25mm");
   const [fill, setFill] = useState("#000000");
+  const [fontUrl, setFontUrl] = useState<string | null>(null);
+  const [svgPath, setSvgPath] = useState<string>("");
+  const [svgViewBox, setSvgViewBox] = useState<string>("0 0 300 150");
+  const [loadingFont, setLoadingFont] = useState(false);
 
-  // 动态注入 Google Font
+  // 1. 直接用 menu 字段作为字体文件 URL
   useEffect(() => {
-    if (!selectedFont) return;
-    const fontName = selectedFont.replace(/ /g, "+");
-    const linkId = "google-font-link";
-    let link = document.getElementById(linkId) as HTMLLinkElement | null;
-    if (!link) {
-      link = document.createElement("link");
-      link.id = linkId;
-      link.rel = "stylesheet";
-      document.head.appendChild(link);
-    }
-    link.href = `https://fonts.googleapis.com/css?family=${fontName}:400,700&display=swap`;
-    return () => {
-      if (link) link.remove();
-    };
+    if (!selectedFont || !selectedFont.menu) return;
+    setFontUrl(selectedFont.menu);
   }, [selectedFont]);
 
-  // 生成SVG字符串
+  // 2. 用 opentype.js 生成 path
+  useEffect(() => {
+    if (!fontUrl || !text) {
+      setSvgPath("");
+      return;
+    }
+    setLoadingFont(true);
+    opentype.load(fontUrl, (err, font) => {
+      setLoadingFont(false);
+      if (err || !font) {
+        setSvgPath("");
+        return;
+      }
+      // 生成 path
+      const path = font.getPath(text, 0, fontSize, fontSize);
+      const { x1, y1, x2, y2 } = path.getBoundingBox();
+      setSvgViewBox(`${x1} ${y1} ${x2 - x1} ${y2 - y1}`);
+      setSvgPath(path.toPathData());
+    });
+  }, [fontUrl, text, fontSize]);
+
+  // 3. 生成 SVG 字符串
   const svgString = useMemo(() => {
-    const fontFamily = selectedFont ? `'${selectedFont}', sans-serif` : 'sans-serif';
-    const width = text.length * fontSize * 0.7 + 40;
-    const height = fontSize * 1.5;
-    return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
-  <text x="50%" y="50%" font-family="${fontFamily}" font-size="${fontSize}" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" text-anchor="middle" dominant-baseline="middle">${text}</text>
+    if (!svgPath) return "";
+    return `<svg width="${fontSize * text.length}" height="${fontSize * 1.5}" viewBox="${svgViewBox}" xmlns="http://www.w3.org/2000/svg">
+  <path d="${svgPath}" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" />
 </svg>`;
-  }, [selectedFont, text, fontSize, stroke, strokeWidth, fill]);
+  }, [svgPath, svgViewBox, fontSize, fill, stroke, strokeWidth, text.length]);
 
   return (
     <div className="flex min-h-screen">
       {/* 左侧配置区 */}
       <aside className="w-full max-w-sm bg-muted p-6 flex flex-col gap-4 border-r">
         <h2 className="text-lg font-bold mb-2">配置</h2>
-        <GoogleFontSelector value={selectedFont} onChange={setSelectedFont} />
+        <GoogleFontSelector value={selectedFont?.family || ""} onChange={setSelectedFont} />
         <div className="flex flex-col gap-2">
           <Label htmlFor="text">文本</Label>
           <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder="请输入要转换的文字" />
@@ -76,7 +88,9 @@ export default function Home() {
         <div className="w-full flex flex-col items-center gap-4">
           {/* SVG 预览 */}
           <div className="bg-white border rounded w-full max-w-xl h-40 flex items-center justify-center overflow-auto">
-            <div dangerouslySetInnerHTML={{ __html: svgString }} />
+            {loadingFont ? <span className="text-gray-400">字体加载中...</span> : (
+              svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">请输入内容</span>
+            )}
           </div>
           <Label htmlFor="svg-code">SVG 代码</Label>
           <Textarea id="svg-code" className="w-full max-w-xl h-40" readOnly value={svgString} />
