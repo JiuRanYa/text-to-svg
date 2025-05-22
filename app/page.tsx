@@ -46,7 +46,7 @@ export default function Home() {
 
   // 使用 useCallback 和 debounce 优化字体加载
   const loadFont = useCallback(
-    debounce((url: string) => {
+    (url: string) => {
       opentype.load(url, (err: Error | null, font: opentype.Font | null) => {
         if (!err && font) {
           setCurrentFont(font);
@@ -54,7 +54,7 @@ export default function Home() {
           setCurrentFont(null);
         }
       });
-    }, 100),
+    },
     []
   );
 
@@ -115,7 +115,7 @@ export default function Home() {
         console.error('Error generating SVG:', error);
         setSvgPath("");
       }
-    }, 300),
+    }, 200),
     [currentFont, text, fontSize, union, filled, kerning, separate, bezierAccuracy, fill, stroke, strokeWidth, fillRule, dxfUnits]
   );
 
