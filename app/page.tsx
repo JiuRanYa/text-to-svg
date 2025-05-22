@@ -21,10 +21,9 @@ export default function Home() {
   const [stroke, setStroke] = useState("#000000");
   const [strokeWidth, setStrokeWidth] = useState("0.25mm");
   const [fill, setFill] = useState("#000000");
-  const [fontUrl, setFontUrl] = useState<string | null>(null);
   const [svgPath, setSvgPath] = useState<string>("");
-  const [svgViewBox, setSvgViewBox] = useState<string>("0 0 300 150");
   const [loadingFont, setLoadingFont] = useState(false);
+  const [currentFont, setCurrentFont] = useState<any>(null);
   
   // 新增配置项
   const [union, setUnion] = useState(true);
@@ -35,70 +34,64 @@ export default function Home() {
   const [fillRule, setFillRule] = useState<FillRule>("nonzero");
   const [dxfUnits, setDxfUnits] = useState("mm");
 
-  // 1. 直接用 menu 字段作为字体文件 URL
+  // 只在字体或变体变化时加载字体
   useEffect(() => {
     if (!selectedFont) return;
     let url = selectedFont.menu;
     if (selectedVariant && selectedFont.files && selectedFont.files[selectedVariant]) {
       url = selectedFont.files[selectedVariant];
     }
-    setFontUrl(url);
+    setLoadingFont(true);
+    opentype.load(url, (err: any, font: any) => {
+      setLoadingFont(false);
+      if (!err && font) {
+        setCurrentFont(font);
+      } else {
+        setCurrentFont(null);
+      }
+    });
   }, [selectedFont, selectedVariant]);
 
-  // 2. 用 makerjs 生成 SVG
+  // 只要 currentFont 或参数变化就生成 SVG
   useEffect(() => {
-    if (!fontUrl || !text) {
+    if (!currentFont || !text) {
       setSvgPath("");
       return;
     }
-    setLoadingFont(true);
-    opentype.load(fontUrl, (err: Error | null, font: opentype.Font | null) => {
-      setLoadingFont(false);
-      if (err || !font) {
-        setSvgPath("");
-        return;
+    // 使用 makerjs 生成文本模型
+    const textModel = new makerjs.models.Text(
+      currentFont,
+      text,
+      fontSize,
+      union,
+      false,
+      bezierAccuracy,
+      { kerning }
+    );
+    if (separate) {
+      for (const i in textModel.models) {
+        textModel.models[i].layer = i;
       }
-
-      // 使用 makerjs 生成文本模型
-      const textModel = new makerjs.models.Text(
-        font,
-        text,
-        fontSize,
-        union,
-        false,
-        bezierAccuracy,
-        { kerning }
-      );
-
-      if (separate) {
-        for (const i in textModel.models) {
-          textModel.models[i].layer = i;
-        }
-      }
-
-      // 生成 SVG
-      const svg = makerjs.exporter.toSVG(textModel, {
-        fill: filled ? fill : undefined,
-        stroke: stroke,
-        strokeWidth: strokeWidth,
-        fillRule: fillRule,
-        scalingStroke: true,
-      });
-
-      // 生成 DXF
-      const dxf = makerjs.exporter.toDXF(textModel, { 
-        units: dxfUnits,
-        usePOLYLINE: true 
-      });
-
-      setSvgPath(svg);
-      // 保存 DXF 数据到 data 属性
-      const svgElement = document.createElement('div');
-      svgElement.innerHTML = svg;
-      svgElement.setAttribute('data-dxf', dxf);
-      setSvgViewBox(svgElement.getAttribute('viewBox') || "0 0 300 150");
+    }
+    // 生成 SVG
+    const svg = makerjs.exporter.toSVG(textModel, {
+      fill: filled ? fill : undefined,
+      stroke: stroke,
+      strokeWidth: strokeWidth,
+      fillRule: fillRule,
+      scalingStroke: true,
     });
-  }, [fontUrl, text, fontSize, union, filled, kerning, separate, bezierAccuracy, fill, stroke, strokeWidth, fillRule]);
+    // 生成 DXF
+    const dxf = makerjs.exporter.toDXF(textModel, { 
+      units: dxfUnits,
+      usePOLYLINE: true 
+    });
+    setSvgPath(svg);
+    // 保存 DXF 数据到 data 属性
+    const svgElement = document.createElement('div');
+    svgElement.innerHTML = svg;
+    svgElement.setAttribute('data-dxf', dxf);
+  }, [currentFont, text, fontSize, union, filled, kerning, separate, bezierAccuracy, fill, stroke, strokeWidth, fillRule, dxfUnits]);
 
   // 3. 生成 SVG 字符串
   const svgString = useMemo(() => {
@@ -146,7 +139,7 @@ export default function Home() {
                 <SelectValue placeholder="选择字体变体" />
               </SelectTrigger>
               <SelectContent>
-                {selectedFont.variants?.map((variant) => (
+                {selectedFont.variants?.map((variant: string) => (
                   <SelectItem key={variant} value={variant}>
                     {variant}
                   </SelectItem>
