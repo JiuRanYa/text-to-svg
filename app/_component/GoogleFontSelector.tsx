@@ -55,7 +55,7 @@ export function GoogleFontSelector({ value, onChange }: GoogleFontSelectorProps)
           onChange(font);
         }}
         disabled={isLoading}
-        className="w-full p-2 border rounded-md bg-background"
+        className="w-full p-2 border rounded-md"
         style={{ fontFamily: value }}
       >
         <option value="">{isLoading ? "加载中..." : "请选择字体"}</option>
