@@ -43,19 +43,22 @@ export default function Home() {
 
   const recommendFonts = [
     'Protest Riot',
-    'Oooh Baby', 
     'Pacifico', 
     'Sofadi One',
     'Sonsie One',
     'Risque',
+    'Oooh Baby', 
     'Romanesco', 
-    'Poppins',
+    'Kapakana',
   ]
 
   const recommendTextFonts = [
     'Roboto',
     'Varela Round',
     'Noto Sans Nabataean',
+    'Crimson Text',
+    'Oxygen',
+    'Overpass'
   ]
   // 使用 useMemo 缓存字体加载
   const fontUrl = useMemo(() => {
@@ -370,7 +373,7 @@ export default function Home() {
             {recommendFonts.map(family => (
               <button
                 key={family}
-                className={'px-4 py-2 rounded border hover:bg-muted transition font-bold'}
+                className={'px-4 py-2 rounded-lg border hover:bg-muted transition font-bold text-xs'}
                 style={{ fontFamily: family, background: selectedFont?.family === family ? '#e0e7ff' : undefined }}
                 onClick={() => {
                   const fontObj = fontList.find(f => f.family === family)
@@ -386,7 +389,7 @@ export default function Home() {
             {recommendTextFonts.map(family => (
               <button
                 key={family}
-                className={'px-4 py-2 rounded border hover:bg-muted transition font-bold'}
+                className={'px-4 py-2 rounded-lg border hover:bg-muted transition font-bold text-xs'}
                 style={{ fontFamily: family, background: selectedFont?.family === family ? '#e0e7ff' : undefined }}
                 onClick={() => {
                   const fontObj = fontList.find(f => f.family === family)
