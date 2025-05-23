@@ -24,6 +24,34 @@ export const metadata: Metadata = {
     '在线工具',
     '矢量字体'
   ],
+  icons: {
+    icon: [
+      {
+        url: '/favicon.ico',
+        sizes: 'any',
+        type: 'image/png'
+      },
+    ],
+    apple: {
+      url: '/favicon.ico',
+      sizes: '180x180',
+      type: 'image/png'
+    },
+    other: [
+      {
+        rel: 'android-chrome',
+        url: '/favicon.ico',
+        sizes: '192x192',
+        type: 'image/png'
+      },
+      {
+        rel: 'android-chrome',
+        url: '/favicon.ico',
+        sizes: '512x512',
+        type: 'image/png'
+      }
+    ]
+  },
   authors: [{ name: 'Jiuran' }],
   creator: 'Jiuran',
   openGraph: {
