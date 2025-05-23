@@ -263,7 +263,7 @@ export default function Home() {
             <div className="mb-4">
               <Label className="mb-2 block">
                 Custom Font
-                <span className="text-xs text-gray-500">(optional)</span>
+                <span className="text-xs text-gray-500 ms-2">(optional)</span>
               </Label>
               <CustomFontUploader 
                 onFontLoaded={handleCustomFontLoaded}
