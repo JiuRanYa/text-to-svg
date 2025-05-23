@@ -140,7 +140,8 @@ export default function Home() {
       try {
         // 使用 makerjs 生成文本模型
         const textModel = new makerjs.models.Text(
-          currentFont,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          currentFont as any,
           text,
           fontSize,
           union,
