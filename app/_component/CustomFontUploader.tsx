@@ -59,7 +59,7 @@ export function CustomFontUploader({ onFontLoaded, onFontRemoved, currentFileNam
     <Button
       variant="outline"
       disabled={isLoading}
-      className="w-full"
+      className="w-full bg-transparent"
       onClick={() => {
         const input = document.createElement('input')
         input.type = 'file'
