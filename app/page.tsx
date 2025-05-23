@@ -18,12 +18,12 @@ type FillRule = 'nonzero' | 'evenodd';
 
 export default function Home() {
   const [selectedFont, setSelectedFont] = useState<GoogleFontItem | null>({
-    family: 'Sonsie One',
+    family: 'Protest Riot',
     variants: ['regular'],
     files: {
-      regular: 'https://fonts.gstatic.com/s/sonsieone/v21/PbymFmP_EAnPqbKaoc18YVu80lbp8JM.ttf'
+      regular: 'https://fonts.gstatic.com/s/protestriot/v2/d6lPkaOxWMKm7TdezXFmpkrM1_JgjmRpOA.ttf'
     },
-    menu: 'https://fonts.gstatic.com/s/sonsieone/v21/PbymFmP_EAnPqbKaoc18YVu80lbp8JM.ttf'
+    menu: 'https://fonts.gstatic.com/s/protestriot/v2/d6lPkaOxWMKm7TdezXFmpkrM1_JgjmRpOA.ttf'
   })
   const [selectedVariant, setSelectedVariant] = useState<string>('regular')
   const [text, setText] = useState('Nexus')
@@ -50,8 +50,8 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('')
 
   const recommendFonts = [
-    'Sonsie One',
     'Protest Riot',
+    'Sonsie One',
     'Pacifico', 
     'Sofadi One',
     'Risque',
@@ -345,14 +345,14 @@ export default function Home() {
         {/* 上区块：SVG预览和代码 */}
         <div className="w-full max-w-5xl flex flex-row gap-6">
           {/* SVG 预览 */}
-          <div className="flex-1 bg-white border rounded-lg h-48 flex items-center justify-center overflow-auto shadow-sm">
+          <div className="flex-1 bg-white border rounded-lg h-60 flex items-center justify-center overflow-auto shadow-sm">
             {loadingFont ? <span className="text-gray-400">Loading font...</span> : (
               svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">Please enter content</span>
             )}
           </div>
           {/* SVG 代码 */}
           <div className="flex-1 flex flex-col gap-2">
-            <Textarea id="svg-code" className="w-full h-48 rounded" readOnly value={svgString} />
+            <Textarea id="svg-code" className="w-full h-60 rounded" readOnly value={svgString} />
           </div>
         </div>
         {/* 操作按钮 */}
