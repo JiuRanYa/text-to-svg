@@ -18,7 +18,7 @@ export interface GoogleFontSelectorProps {
   setSearchTerm: (v: string) => void;
 }
 
-export function GoogleFontSelector({ value, onChange, fontList, isLoading, searchTerm, setSearchTerm }: GoogleFontSelectorProps) {
+export function GoogleFontSelector({ value, onChange, fontList, isLoading, searchTerm }: GoogleFontSelectorProps) {
   const filteredFonts = useMemo(() => {
     return fontList
       .filter(font => 

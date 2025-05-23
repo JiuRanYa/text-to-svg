@@ -34,7 +34,7 @@ export default function Home() {
   const [svgPath, setSvgPath] = useState<string>('')
   const [dxfPath, setDxfPath] = useState<string>('')
   const [loadingFont] = useState(false)
-  const [currentFont, setCurrentFont] = useState<opentype.Font | null>(null)
+  const [currentFont, setCurrentFont] = useState(null)
   
   // 新增配置项
   const [union, setUnion] = useState(true)
@@ -84,7 +84,7 @@ export default function Home() {
   // 使用 useCallback 和 debounce 优化字体加载
   const loadFont = useCallback(
     (url: string) => {
-      opentype.load(url, (err: Error | null, font: opentype.Font | null) => {
+      opentype.load(url, (err: Error | null, font: null) => {
         if (!err && font) {
           setCurrentFont(font)
         } else {
@@ -102,6 +102,7 @@ export default function Home() {
   }, [fontUrl, loadFont])
 
   // 使用 useCallback 和 debounce 优化 SVG 生成
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const generateSvg = useCallback(
     debounce(() => {
       if (!currentFont || !text) {
@@ -200,6 +201,7 @@ export default function Home() {
         setIsLoading(false)
         loadFont(selectedFont?.files?.regular || '')
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
