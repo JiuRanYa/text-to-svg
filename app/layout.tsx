@@ -32,7 +32,12 @@ export const metadata: Metadata = {
     'font vector generator',
     'google font svg path',
     'font to vector',
-    'google font converter'
+    'google font converter',
+    'text to svg',
+    'text to svg generator',
+    'convert text to svg',
+    'logo generator',
+    'web logo generator',
   ],
   icons: {
     icon: [
