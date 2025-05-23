@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Text to SVG 在线转换工具 | 高质量 SVG 字体生成器',
-  description: '免费在线将文本转换为 SVG 矢量图，支持多种字体和样式，适用于网页设计、Logo 制作等场景。',
+  title: 'Text to SVG Online Converter | High Quality SVG Font Generator',
+  description: 'Free online tool to convert text to SVG vector graphics, supporting multiple fonts and styles, perfect for web design, logo creation, and more.',
   verification: {
     google: '5GH1kG7yjme4OwP09VID_uU9sDBuXFo3H3D9NXrWWa8',
     other: {
@@ -25,11 +25,11 @@ export const metadata: Metadata = {
   keywords: [
     'text to svg',
     'google font to svg',
-    '文本转SVG',
-    'SVG生成器',
-    '字体SVG',
-    '在线工具',
-    '矢量字体'
+    'svg converter',
+    'svg generator',
+    'font to svg',
+    'online tool',
+    'vector font'
   ],
   icons: {
     icon: [
@@ -62,17 +62,17 @@ export const metadata: Metadata = {
   authors: [{ name: 'Jiuran' }],
   creator: 'Jiuran',
   openGraph: {
-    title: 'Text to SVG 在线转换工具',
-    description: '免费在线将文本转换为 SVG 矢量图，支持多种字体和样式。',
+    title: 'Text to SVG Online Converter',
+    description: 'Free online tool to convert text to SVG vector graphics, supporting multiple fonts and styles.',
     url: 'https://text-to-svg.tool.tokyo/',
     siteName: 'Text to SVG',
-    locale: 'zh_CN',
+    locale: 'en_US',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Text to SVG 在线转换工具',
-    description: '免费在线将文本转换为 SVG 矢量图，支持多种字体和样式。'
+    title: 'Text to SVG Online Converter',
+    description: 'Free online tool to convert text to SVG vector graphics, supporting multiple fonts and styles.'
   }
 }
 

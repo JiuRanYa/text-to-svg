@@ -69,8 +69,8 @@ export default function Home() {
     'Overpass'
   ]
   const recommendTools = [
-    {title: '个人博客', href: 'https://jiuran.fun'},
-    {title: 'AI导航站', href: 'https://nexus.skin'},
+    {title: 'Personal Blog', href: 'https://jiuran.fun'},
+    {title: 'AI Navigation', href: 'https://nexus.skin'},
   ]
   // 使用 useMemo 缓存字体加载
   const fontUrl = useMemo(() => {
@@ -175,7 +175,7 @@ export default function Home() {
     a.download = `${text}.dxf`
     a.click()
     URL.revokeObjectURL(url)
-    toast.success('DXF 文件下载成功')
+    toast.success('DXF file downloaded successfully')
   }
 
   // 当 selectedFont 变化时，自动切换到 regular 变体
@@ -210,7 +210,7 @@ export default function Home() {
       <aside className="w-full max-w-sm bg-muted p-0 flex flex-col gap-0 border-r h-screen">
         <ScrollArea className="h-screen p-6">
           <div className="flex flex-col gap-4">
-            <h2 className="text-lg font-bold mb-2">配置</h2>
+            <h2 className="text-lg font-bold mb-2">Settings</h2>
             <GoogleFontSelector 
               value={selectedFont?.family || ''} 
               onChange={setSelectedFont}
@@ -222,10 +222,10 @@ export default function Home() {
             
             {selectedFont && (
               <div className="flex flex-col gap-2">
-                <Label>字体变体</Label>
+                <Label>Font Variant</Label>
                 <Select value={selectedVariant} onValueChange={setSelectedVariant}>
                   <SelectTrigger>
-                    <SelectValue placeholder="选择字体变体" />
+                    <SelectValue placeholder="Select font variant" />
                   </SelectTrigger>
                   <SelectContent>
                     {selectedFont.variants?.map((variant: string) => (
@@ -239,40 +239,40 @@ export default function Home() {
             )}
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="text">文本</Label>
-              <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder="请输入要转换的文字" />
+              <Label htmlFor="text">Text</Label>
+              <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder="Enter text to convert" />
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="size">字号</Label>
+              <Label htmlFor="size">Font Size</Label>
               <Input id="size" type="number" value={fontSize} onChange={e => setFontSize(Number(e.target.value))} />
             </div>
 
             
             <div className="flex flex-col gap-6 my-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="union">合并路径</Label>
+                <Label htmlFor="union">Merge Paths</Label>
                 <Switch id="union" checked={union} onCheckedChange={setUnion} />
               </div>
 
               <div className="flex items-center justify-between">
-                <Label htmlFor="filled">填充</Label>
+                <Label htmlFor="filled">Fill</Label>
                 <Switch id="filled" checked={filled} onCheckedChange={setFilled} />
               </div>
 
               <div className="flex items-center justify-between">
-                <Label htmlFor="kerning">字距调整</Label>
+                <Label htmlFor="kerning">Kerning</Label>
                 <Switch id="kerning" checked={kerning} onCheckedChange={setKerning} />
               </div>
 
               <div className="flex items-center justify-between">
-                <Label htmlFor="separate">分离路径</Label>
+                <Label htmlFor="separate">Separate Paths</Label>
                 <Switch id="separate" checked={separate} onCheckedChange={setSeparate} />
               </div>
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="bezier-accuracy">贝塞尔曲线精度</Label>
+              <Label htmlFor="bezier-accuracy">Bezier Curve Accuracy</Label>
               <Input 
                 id="bezier-accuracy" 
                 type="number" 
@@ -285,10 +285,10 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="fill-rule">填充规则</Label>
+              <Label htmlFor="fill-rule">Fill Rule</Label>
               <Select value={fillRule} onValueChange={(value: FillRule) => setFillRule(value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="选择填充规则" />
+                  <SelectValue placeholder="Select fill rule" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="nonzero">nonzero</SelectItem>
@@ -298,25 +298,25 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="stroke">描边颜色</Label>
+              <Label htmlFor="stroke">Stroke Color</Label>
               <Input id="stroke" type="color" value={stroke} onChange={e => setStroke(e.target.value)} />
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="stroke-width">描边宽度</Label>
+              <Label htmlFor="stroke-width">Stroke Width</Label>
               <Input id="stroke-width" type="text" value={strokeWidth} onChange={e => setStrokeWidth(e.target.value)} />
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="fill">填充颜色</Label>
+              <Label htmlFor="fill">Fill Color</Label>
               <Input id="fill" type="color" value={fill} onChange={e => setFill(e.target.value)} />
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="dxf-units">DXF 单位</Label>
+              <Label htmlFor="dxf-units">DXF Units</Label>
               <Select value={dxfUnits} onValueChange={setDxfUnits}>
                 <SelectTrigger>
-                  <SelectValue placeholder="选择单位" />
+                  <SelectValue placeholder="Select unit" />
                 </SelectTrigger>
                 <SelectContent>
                   {Object.values(makerjs.unitType).map((unit) => (
@@ -336,18 +336,18 @@ export default function Home() {
         {/* 标题行：SVG预览 和 SVG代码 */}
         <div className="w-full max-w-5xl flex flex-row gap-6 mb-1">
           <div className="flex-1 flex items-center">
-            <h2 className="text-lg font-bold mb-0">SVG 预览</h2>
+            <h2 className="text-lg font-bold mb-0">SVG Preview</h2>
           </div>
           <div className="flex-1 flex items-center">
-            <h2 className="text-lg font-bold mb-0">SVG 代码</h2>
+            <h2 className="text-lg font-bold mb-0">SVG Code</h2>
           </div>
         </div>
         {/* 上区块：SVG预览和代码 */}
         <div className="w-full max-w-5xl flex flex-row gap-6">
           {/* SVG 预览 */}
           <div className="flex-1 bg-white border rounded-lg h-48 flex items-center justify-center overflow-auto shadow-sm">
-            {loadingFont ? <span className="text-gray-400">字体加载中...</span> : (
-              svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">请输入内容</span>
+            {loadingFont ? <span className="text-gray-400">Loading font...</span> : (
+              svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">Please enter content</span>
             )}
           </div>
           {/* SVG 代码 */}
@@ -359,9 +359,9 @@ export default function Home() {
         <div className="w-full max-w-5xl flex flex-row gap-2 justify-end">
           <Button variant="outline" onClick={() => {
             navigator.clipboard.writeText(svgString)
-            toast.success('SVG 代码已复制到剪贴板')
+            toast.success('SVG code copied to clipboard')
           }}>
-            复制代码
+            Copy Code
           </Button>
           <Button onClick={() => {
             const blob = new Blob([svgString], { type: 'image/svg+xml' })
@@ -371,17 +371,17 @@ export default function Home() {
             a.download = 'text.svg'
             a.click()
             URL.revokeObjectURL(url)
-            toast.success('SVG 文件下载成功')
+            toast.success('SVG file downloaded successfully')
           }}>
-            下载 SVG
+            Download SVG
           </Button>
           <Button onClick={downloadDxf}>
-            下载 DXF
+            Download DXF
           </Button>
         </div>
         {/* 推荐字体区 */}
         <div className="w-full max-w-5xl mt-6 bg-gray-50 border rounded-lg p-4 shadow-sm">
-          <h3 className="text-base font-semibold mb-3">推荐网站 Logo 字体</h3>
+          <h3 className="text-base font-semibold mb-3">Recommended Logo Fonts</h3>
           <div className="flex flex-wrap gap-3 mb-6">
             {recommendFonts.map(family => (
               <button
@@ -397,7 +397,7 @@ export default function Home() {
               </button>
             ))}
           </div>
-          <h3 className="text-base font-semibold mb-3">推荐文本字体</h3>
+          <h3 className="text-base font-semibold mb-3">Recommended Text Fonts</h3>
           <div className="flex flex-wrap gap-3 mb-6">
             {recommendTextFonts.map(family => (
               <button
@@ -416,7 +416,7 @@ export default function Home() {
 
           <div className="flex flex-col gap-3 max-w-xs">
             {/* 其他工具页脚区 */}
-            <h3 className="text-base font-semibold">其他工具</h3>
+            <h3 className="text-base font-semibold">Other Tools</h3>
             <div className="flex flex-wrap gap-3">
               {recommendTools.map(tool => (
                 <a
