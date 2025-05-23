@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: 'Text to SVG 在线转换工具 | 高质量 SVG 字体生成器',
   description: '免费在线将文本转换为 SVG 矢量图，支持多种字体和样式，适用于网页设计、Logo 制作等场景。',
   verification: {
-    google: 'RwPCRBq2cdvsKR8L2dUtj7Z7qm31-cSLnZwaVGGPQyM',
+    google: '5GH1kG7yjme4OwP09VID_uU9sDBuXFo3H3D9NXrWWa8',
     other: {
       'baidu-site-verification': 'codeva-QJjg9btzMx'
     }
