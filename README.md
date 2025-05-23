@@ -23,7 +23,7 @@ This project is a high-quality online SVG font generator. It allows you to conve
 1. Clone this repo
 
    ```bash
-   git clone https://github.com/jiuran-code/text-to-svg.git
+   git clone https://github.com/JiuRanYa/text-to-svg.git
    cd text-to-svg
    ```
 
