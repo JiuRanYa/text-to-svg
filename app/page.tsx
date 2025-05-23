@@ -17,7 +17,14 @@ import { ScrollArea } from '@/core/ui/scroll-area'
 type FillRule = 'nonzero' | 'evenodd';
 
 export default function Home() {
-  const [selectedFont, setSelectedFont] = useState<GoogleFontItem | null>(null)
+  const [selectedFont, setSelectedFont] = useState<GoogleFontItem | null>({
+    family: 'Sonsie One',
+    variants: ['regular'],
+    files: {
+      regular: 'https://fonts.gstatic.com/s/sonsieone/v21/PbymFmP_EAnPqbKaoc18YVu80lbp8JM.ttf'
+    },
+    menu: 'https://fonts.gstatic.com/s/sonsieone/v21/PbymFmP_EAnPqbKaoc18YVu80lbp8JM.ttf'
+  })
   const [selectedVariant, setSelectedVariant] = useState<string>('regular')
   const [text, setText] = useState('ToolHub')
   const [fontSize, setFontSize] = useState(50)
@@ -42,10 +49,10 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('')
 
   const recommendFonts = [
+    'Sonsie One',
     'Protest Riot',
     'Pacifico', 
     'Sofadi One',
-    'Sonsie One',
     'Risque',
     'Oooh Baby', 
     'Romanesco', 
@@ -173,24 +180,6 @@ export default function Home() {
     toast.success('DXF 文件下载成功')
   }
 
-  const copyToTsx = () => {
-    if (!svgString) return toast.error('没有可用的 SVG 代码')
-    const tsx = svgString
-      .replace(/class=/g, 'className=')
-      .replace(/clip-rule=/g, 'clipRule=')
-      .replace(/fill-rule=/g, 'fillRule=')
-      .replace(/stroke-width=/g, 'strokeWidth=')
-      .replace(/stroke-linecap=/g, 'strokeLinecap=')
-      .replace(/stroke-linejoin=/g, 'strokeLinejoin=')
-      .replace(/stroke-miterlimit=/g, 'strokeMiterlimit=')
-      .replace(/stop-color=/g, 'stopColor=')
-      .replace(/stop-opacity=/g, 'stopOpacity=')
-      .replace(/viewbox=/gi, 'viewBox=')
-      .replace(/(\s)data-([a-z-]+)=/g, '$1data-$2=')
-    navigator.clipboard.writeText(tsx)
-    toast.success('已复制为 TSX')
-  }
-
   // 当 selectedFont 变化时，自动切换到 regular 变体
   useEffect(() => {
     if (!selectedFont) return
@@ -212,6 +201,7 @@ export default function Home() {
       })
       .finally(() => {
         setIsLoading(false)
+        loadFont(selectedFont?.files?.regular || '')
       })
   }, [])
 
@@ -372,7 +362,6 @@ export default function Home() {
             navigator.clipboard.writeText(svgString)
             toast.success('SVG 代码已复制到剪贴板')
           }}>复制代码</Button>
-          <Button variant="outline" onClick={copyToTsx}>复制为 TSX</Button>
           <Button onClick={() => {
             const blob = new Blob([svgString], { type: 'image/svg+xml' })
             const url = URL.createObjectURL(blob)
