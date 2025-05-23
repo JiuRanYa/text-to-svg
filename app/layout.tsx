@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Text to SVG 在线转换工具',
     description: '免费在线将文本转换为 SVG 矢量图，支持多种字体和样式。',
-    url: 'https://your-domain.com/',
+    url: 'https://text-to-svg.tool.tokyo/',
     siteName: 'Text to SVG',
     locale: 'zh_CN',
     type: 'website'
