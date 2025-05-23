@@ -68,6 +68,10 @@ export default function Home() {
     'Oxygen',
     'Overpass'
   ]
+  const recommendTools = [
+    {title: '个人博客', href: 'https://jiuran.fun'},
+    {title: 'AI导航站', href: 'https://nexus.skin'},
+  ]
   // 使用 useMemo 缓存字体加载
   const fontUrl = useMemo(() => {
     if (!selectedFont) return null
@@ -392,7 +396,7 @@ export default function Home() {
             ))}
           </div>
           <h3 className="text-base font-semibold mb-3">推荐文本字体</h3>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 mb-6">
             {recommendTextFonts.map(family => (
               <button
                 key={family}
@@ -406,6 +410,24 @@ export default function Home() {
                 {family}
               </button>
             ))}
+          </div>
+
+          <div className="flex flex-col gap-3 max-w-xs">
+            {/* 其他工具页脚区 */}
+            <h3 className="text-base font-semibold">其他工具</h3>
+            <div className="flex flex-wrap gap-3">
+              {recommendTools.map(tool => (
+                <a
+                  href={tool.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={tool.title}
+                  className={'px-4 py-2 rounded-lg border hover:bg-muted transition font-bold text-xs'}
+                >
+                  {tool.title}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </main>
