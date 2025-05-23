@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import debounce from 'lodash/debounce'
 import { toast } from 'sonner'
 import { ScrollArea } from '@/core/ui/scroll-area'
+import { CustomFontUploader } from './_component/CustomFontUploader'
 
 type FillRule = 'nonzero' | 'evenodd';
 
@@ -34,7 +35,7 @@ export default function Home() {
   const [svgPath, setSvgPath] = useState<string>('')
   const [dxfPath, setDxfPath] = useState<string>('')
   const [loadingFont] = useState(false)
-  const [currentFont, setCurrentFont] = useState(null)
+  const [currentFont, setCurrentFont] = useState<opentype.Font | null>(null)
   
   // 新增配置项
   const [union, setUnion] = useState(true)
@@ -82,25 +83,50 @@ export default function Home() {
     return selectedFont.menu
   }, [selectedFont, selectedVariant])
 
-  // 使用 useCallback 和 debounce 优化字体加载
+  const [customFont, setCustomFont] = useState<opentype.Font | null>(null)
+  const [customFontName, setCustomFontName] = useState<string>('')
+  
+  // 修改 loadFont 函数以支持自定义字体
   const loadFont = useCallback(
-    (url: string) => {
-      opentype.load(url, (err: Error | null, font: null) => {
-        if (!err && font) {
-          setCurrentFont(font)
-        } else {
-          setCurrentFont(null)
-        }
-      })
+    (url: string | opentype.Font) => {
+      if (typeof url === 'string') {
+        opentype.load(url, (err: Error | null, font: opentype.Font | null) => {
+          if (!err && font) {
+            setCurrentFont(font)
+          } else {
+            setCurrentFont(null)
+          }
+        })
+      } else {
+        setCurrentFont(url)
+      }
     },
     []
   )
 
-  // 只在字体 URL 变化时加载字体
-  useEffect(() => {
-    if (!fontUrl) return
-    loadFont(fontUrl)
+  // 添加自定义字体处理函数
+  const handleCustomFontLoaded = useCallback((font: opentype.Font, fileName: string) => {
+    setCustomFont(font)
+    setCustomFontName(fileName)
+    setCurrentFont(font)
+  }, [])
+
+  const handleCustomFontRemoved = useCallback(() => {
+    setCustomFont(null)
+    setCustomFontName('')
+    if (fontUrl) {
+      loadFont(fontUrl)
+    }
   }, [fontUrl, loadFont])
+
+  // 修改 useEffect 以支持自定义字体
+  useEffect(() => {
+    if (customFont) {
+      setCurrentFont(customFont)
+    } else if (fontUrl) {
+      loadFont(fontUrl)
+    }
+  }, [fontUrl, customFont, loadFont])
 
   // 使用 useCallback 和 debounce 优化 SVG 生成
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -212,16 +238,41 @@ export default function Home() {
         <ScrollArea className="h-screen p-6">
           <div className="flex flex-col gap-4">
             <h2 className="text-lg font-bold mb-2">Settings</h2>
-            <GoogleFontSelector 
-              value={selectedFont?.family || ''} 
-              onChange={setSelectedFont}
-              fontList={fontList}
-              isLoading={isLoading}
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-            />
+
+
+            {/* Google Fonts 选择器 */}
+            <div className="mb-4">
+              <GoogleFontSelector 
+                value={selectedFont?.family || ''} 
+                onChange={(font) => {
+                  if (!customFont) {
+                    setSelectedFont(font)
+                  } else {
+                    toast.info('Custom font is active. Clear it first to use Google Fonts.')
+                  }
+                }}
+                fontList={fontList}
+                isLoading={isLoading}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+              />
+            </div>
             
-            {selectedFont && (
+            {/* 自定义字体上传组件 */}
+            <div className="mb-4">
+              <Label className="mb-2 block">
+                Custom Font
+                <span className="text-xs text-gray-500">(optional)</span>
+              </Label>
+              <CustomFontUploader 
+                onFontLoaded={handleCustomFontLoaded}
+                onFontRemoved={handleCustomFontRemoved}
+                currentFileName={customFontName}
+              />
+            </div>
+            
+            {/* 字体变体选择器 */}
+            {selectedFont && !customFont && (
               <div className="flex flex-col gap-2">
                 <Label>Font Variant</Label>
                 <Select value={selectedVariant} onValueChange={setSelectedVariant}>
@@ -238,7 +289,7 @@ export default function Home() {
                 </Select>
               </div>
             )}
-
+            
             <div className="flex flex-col gap-2">
               <Label htmlFor="text">Text</Label>
               <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder="Enter text to convert" />
