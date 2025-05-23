@@ -29,7 +29,23 @@ export function GoogleFontSelector({ value, onChange, fontList, isLoading, searc
 
   return (
     <div className="flex flex-col gap-2">
-      <Label htmlFor="google-font">Google Font</Label>
+      <div className="flex items-center gap-2">
+        <Label htmlFor="google-font">
+          Google Font
+        </Label>
+        <span className="text-xs text-gray-500">
+          (View all on {' '}
+          <a
+            href="https://fonts.google.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-blue-600 hover:underline"
+          >
+            Google Font
+          </a>
+          ）
+        </span>
+      </div>
       <select
         id="google-font"
         value={value}
