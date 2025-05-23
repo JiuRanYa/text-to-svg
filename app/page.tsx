@@ -18,12 +18,12 @@ type FillRule = 'nonzero' | 'evenodd';
 
 export default function Home() {
   const [selectedFont, setSelectedFont] = useState<GoogleFontItem | null>({
-    family: 'Protest Riot',
+    family: 'Lily Script One',
     variants: ['regular'],
     files: {
-      regular: 'https://fonts.gstatic.com/s/protestriot/v2/d6lPkaOxWMKm7TdezXFmpkrM1_JgjmRpOA.ttf'
+      regular: 'https://fonts.gstatic.com/s/lilyscriptone/v15/LhW9MV7ZMfIPdMxeBjBvFN8SXLS4gsSjQNsRMg.ttf'
     },
-    menu: 'https://fonts.gstatic.com/s/protestriot/v2/d6lPkaOxWMKm7TdezXFmpkrM1_JgjmRpOA.ttf'
+    menu: 'https://fonts.gstatic.com/s/lilyscriptone/v15/LhW9MV7ZMfIPdMxeBjBvFN8SXLS4gsSjQNsRMg.ttf'
   })
   const [selectedVariant, setSelectedVariant] = useState<string>('regular')
   const [text, setText] = useState('Nexus')
@@ -50,6 +50,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('')
 
   const recommendFonts = [
+    'Lily Script One',
     'Protest Riot',
     'Sonsie One',
     'Pacifico', 
