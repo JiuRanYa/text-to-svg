@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api
 
-Sitemap: https://text-to-svg-ten.vercel.app/sitemap.xml
+Sitemap: https://text-to-svg.tool.tokyo/sitemap.xml

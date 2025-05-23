@@ -3,15 +3,15 @@
 > 一站式将文本转换为高质量 SVG 矢量图，支持多字体、多格式导出，适用于网页设计、Logo、激光雕刻等。
 
 ## 核心内容
-- [SVG 字体生成](https://text-to-svg-ten.vercel.app/)：输入文本，选择字体，实时生成 SVG 矢量图
-- [Logo 字体推荐](https://text-to-svg-ten.vercel.app/)：精选适合 Logo 的 Google Fonts 字体
-- [文本字体推荐](https://text-to-svg-ten.vercel.app/)：常用网页与印刷字体推荐
+- [SVG 字体生成](https://text-to-svg.tool.tokyo/)：输入文本，选择字体，实时生成 SVG 矢量图
+- [Logo 字体推荐](https://text-to-svg.tool.tokyo/)：精选适合 Logo 的 Google Fonts 字体
+- [文本字体推荐](https://text-to-svg.tool.tokyo/)：常用网页与印刷字体推荐
 
 ## 常用资源
-- [SVG 代码导出](https://text-to-svg-ten.vercel.app/)：一键复制 SVG/TSX 代码
-- [DXF 文件下载](https://text-to-svg-ten.vercel.app/)：支持激光雕刻等场景的 DXF 导出
+- [SVG 代码导出](https://text-to-svg.tool.tokyo/)：一键复制 SVG/TSX 代码
+- [DXF 文件下载](https://text-to-svg.tool.tokyo/)：支持激光雕刻等场景的 DXF 导出
 - [外部工具推荐](https://nexus.skin/)：AI 导航站
 
 ## 最新更新
-- [支持一键复制 TSX 组件](https://text-to-svg-ten.vercel.app/)：更新于2024年4月
-- [DXF 下载逻辑优化](https://text-to-svg-ten.vercel.app/)：更新于2024年4月 
+- [支持一键复制 TSX 组件](https://text-to-svg.tool.tokyo/)：更新于2024年4月
+- [DXF 下载逻辑优化](https://text-to-svg.tool.tokyo/)：更新于2024年4月 
