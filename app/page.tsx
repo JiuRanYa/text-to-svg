@@ -26,7 +26,7 @@ export default function Home() {
     menu: 'https://fonts.gstatic.com/s/sonsieone/v21/PbymFmP_EAnPqbKaoc18YVu80lbp8JM.ttf'
   })
   const [selectedVariant, setSelectedVariant] = useState<string>('regular')
-  const [text, setText] = useState('ToolHub')
+  const [text, setText] = useState('Nexus')
   const [fontSize, setFontSize] = useState(50)
   const [stroke, setStroke] = useState('#000000')
   const [strokeWidth, setStrokeWidth] = useState('0.25mm')
