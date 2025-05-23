@@ -173,6 +173,24 @@ export default function Home() {
     toast.success('DXF 文件下载成功')
   }
 
+  const copyToTsx = () => {
+    if (!svgString) return toast.error('没有可用的 SVG 代码')
+    const tsx = svgString
+      .replace(/class=/g, 'className=')
+      .replace(/clip-rule=/g, 'clipRule=')
+      .replace(/fill-rule=/g, 'fillRule=')
+      .replace(/stroke-width=/g, 'strokeWidth=')
+      .replace(/stroke-linecap=/g, 'strokeLinecap=')
+      .replace(/stroke-linejoin=/g, 'strokeLinejoin=')
+      .replace(/stroke-miterlimit=/g, 'strokeMiterlimit=')
+      .replace(/stop-color=/g, 'stopColor=')
+      .replace(/stop-opacity=/g, 'stopOpacity=')
+      .replace(/viewbox=/gi, 'viewBox=')
+      .replace(/(\s)data-([a-z-]+)=/g, '$1data-$2=')
+    navigator.clipboard.writeText(tsx)
+    toast.success('已复制为 TSX')
+  }
+
   // 当 selectedFont 变化时，自动切换到 regular 变体
   useEffect(() => {
     if (!selectedFont) return
@@ -354,6 +372,7 @@ export default function Home() {
             navigator.clipboard.writeText(svgString)
             toast.success('SVG 代码已复制到剪贴板')
           }}>复制代码</Button>
+          <Button variant="outline" onClick={copyToTsx}>复制为 TSX</Button>
           <Button onClick={() => {
             const blob = new Blob([svgString], { type: 'image/svg+xml' })
             const url = URL.createObjectURL(blob)
@@ -364,7 +383,7 @@ export default function Home() {
             URL.revokeObjectURL(url)
             toast.success('SVG 文件下载成功')
           }}>下载 SVG</Button>
-          <Button variant="outline" onClick={downloadDxf}>下载 DXF</Button>
+          <Button onClick={downloadDxf}>下载 DXF</Button>
         </div>
         {/* 推荐字体区 */}
         <div className="w-full max-w-5xl mt-6 bg-gray-50 border rounded-lg p-4 shadow-sm">
