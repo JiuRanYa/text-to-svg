@@ -32,6 +32,7 @@ export default function Home() {
   const [strokeWidth, setStrokeWidth] = useState('0.25mm')
   const [fill, setFill] = useState('#000000')
   const [svgPath, setSvgPath] = useState<string>('')
+  const [dxfPath, setDxfPath] = useState<string>('')
   const [loadingFont] = useState(false)
   const [currentFont, setCurrentFont] = useState<opentype.Font | null>(null)
   
@@ -137,12 +138,8 @@ export default function Home() {
           usePOLYLINE: true 
         })
         
-        // 保存 DXF 数据到 data 属性
-        const svgElement = document.createElement('div')
-        svgElement.innerHTML = svg
-        svgElement.setAttribute('data-dxf', dxf)
-        
         setSvgPath(svg)
+        setDxfPath(dxf)
       } catch (error) {
         console.error('Error generating SVG:', error)
         setSvgPath('')
@@ -165,12 +162,8 @@ export default function Home() {
   }, [svgPath])
 
   const downloadDxf = () => {
-    const svgElement = document.createElement('div')
-    svgElement.innerHTML = svgPath
-    const dxfData = svgElement.getAttribute('data-dxf')
-    if (!dxfData) return
-
-    const blob = new Blob([dxfData], { type: 'application/dxf' })
+    if (!dxfPath) return
+    const blob = new Blob([dxfPath], { type: 'application/dxf' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -361,7 +354,9 @@ export default function Home() {
           <Button variant="outline" onClick={() => {
             navigator.clipboard.writeText(svgString)
             toast.success('SVG 代码已复制到剪贴板')
-          }}>复制代码</Button>
+          }}>
+            复制代码
+          </Button>
           <Button onClick={() => {
             const blob = new Blob([svgString], { type: 'image/svg+xml' })
             const url = URL.createObjectURL(blob)
@@ -371,8 +366,12 @@ export default function Home() {
             a.click()
             URL.revokeObjectURL(url)
             toast.success('SVG 文件下载成功')
-          }}>下载 SVG</Button>
-          <Button onClick={downloadDxf}>下载 DXF</Button>
+          }}>
+            下载 SVG
+          </Button>
+          <Button onClick={downloadDxf}>
+            下载 DXF
+          </Button>
         </div>
         {/* 推荐字体区 */}
         <div className="w-full max-w-5xl mt-6 bg-gray-50 border rounded-lg p-4 shadow-sm">
