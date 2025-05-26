@@ -4,8 +4,4 @@
     <loc>https://text-to-svg.tool.tokyo/</loc>
     <priority>1.0</priority>
   </url>
-  <url>
-    <loc>https://nexus.skin/</loc>
-    <priority>0.5</priority>
-  </url>
 </urlset> 
