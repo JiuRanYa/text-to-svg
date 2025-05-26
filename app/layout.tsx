@@ -23,18 +23,7 @@ export const metadata: Metadata = {
       'baidu-site-verification': 'codeva-QJjg9btzMx'
     }
   },
-  keywords: [
-    'google font to svg',
-    'font to svg converter',
-    'google font vector',
-    'font to path converter',
-    'google font svg path',
-    'text to svg',
-    'text to svg generator',
-    'convert text to svg',
-    'logo generator',
-    'web logo generator',
-  ],
+
   icons: {
     icon: [
       {
