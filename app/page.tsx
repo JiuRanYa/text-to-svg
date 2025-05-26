@@ -219,7 +219,7 @@ export default function Home() {
   useEffect(() => {
     setIsLoading(true)
     fetch(
-      'https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAOES8EmKhuJEnsn9kS1XKBpxxp-TgN8Jc'
+      'https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBGY1GPOKrkxGQTQV_qoo7oPLiVh5eaC8g'
     )
       .then((res) => res.json())
       .then((data) => {
