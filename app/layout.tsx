@@ -105,6 +105,7 @@ export default function RootLayout({
             gtag('config', 'G-YV1S58F05V');
           `}
         </Script>
+        <link rel="canonical" href="https://text-to-svg.tool.tokyo/"></link>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
