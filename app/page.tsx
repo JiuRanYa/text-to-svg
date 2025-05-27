@@ -386,25 +386,20 @@ export default function Home() {
 
       {/* 右侧预览区 */}
       <main className="flex-1 flex flex-col items-center justify-start p-8 gap-8">
-        {/* 标题行：SVG预览 和 SVG代码 */}
-        <div className="w-full max-w-5xl flex flex-row gap-6 mb-1">
-          <div className="flex-1 flex items-center">
-            <h2 className="text-lg font-bold mb-0">SVG Preview</h2>
-          </div>
-          <div className="flex-1 flex items-center">
-            <h2 className="text-lg font-bold mb-0">SVG Code</h2>
-          </div>
-        </div>
         {/* 上区块：SVG预览和代码 */}
         <div className="w-full max-w-5xl flex flex-row gap-6">
           {/* SVG 预览 */}
-          <div className="flex-1 bg-white border rounded-lg h-60 flex items-center justify-center overflow-auto shadow-sm">
-            {loadingFont ? <span className="text-gray-400">Loading font...</span> : (
-              svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">Please enter content</span>
-            )}
+          <div className="flex-1 flex flex-col gap-2">
+            <h2 className="text-lg font-bold">SVG Preview</h2>
+            <div className="bg-white border rounded-lg h-60 flex items-center justify-center overflow-auto shadow-sm">
+              {loadingFont ? <span className="text-gray-400">Loading font...</span> : (
+                svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">Please enter content</span>
+              )}
+            </div>
           </div>
           {/* SVG 代码 */}
           <div className="flex-1 flex flex-col gap-2">
+            <h2 className="text-lg font-bold">SVG Code</h2>
             <Textarea id="svg-code" className="w-full h-60 rounded" readOnly value={svgString} />
           </div>
         </div>
