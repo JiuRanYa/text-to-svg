@@ -73,6 +73,7 @@ export default function Home() {
   const recommendTools = [
     {title: 'Personal Blog', href: 'https://jiuran.fun'},
     {title: 'AI Navigation', href: 'https://nexus.skin'},
+    {title: 'Star on Github', href: 'https://github.com/JiuRanYa/text-to-svg'},
   ]
   // 使用 useMemo 缓存字体加载
   const fontUrl = useMemo(() => {
@@ -462,7 +463,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="flex flex-col gap-3 max-w-xs">
+          <div className="flex flex-col gap-3 w-full">
             {/* 其他工具页脚区 */}
             <h3 className="text-base font-semibold">Other Tools</h3>
             <div className="flex flex-wrap gap-3">
