@@ -14,6 +14,8 @@ import debounce from 'lodash/debounce'
 import { toast } from 'sonner'
 import { ScrollArea } from '@/core/ui/scroll-area'
 import { CustomFontUploader } from './_component/CustomFontUploader'
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from '@/core/ui/sheet'
+import { Menu } from 'lucide-react'
 
 type FillRule = 'nonzero' | 'evenodd';
 
@@ -73,7 +75,6 @@ export default function Home() {
   const recommendTools = [
     {title: 'Personal Blog', href: 'https://jiuran.fun'},
     {title: 'AI Navigation', href: 'https://nexus.skin'},
-    {title: 'Star on Github', href: 'https://github.com/JiuRanYa/text-to-svg'},
   ]
   // 使用 useMemo 缓存字体加载
   const fontUrl = useMemo(() => {
@@ -233,16 +234,177 @@ export default function Home() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
     <div className="flex min-h-screen overflow-hidden">
-      {/* 左侧配置区 */}
-      <aside className="w-full max-w-sm bg-muted p-0 flex flex-col gap-0 border-r h-screen">
+      {/* 移动端菜单按钮 */}
+      <div className="lg:hidden fixed top-4 right-4 z-50">
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon">
+              <Menu className="h-4 w-4" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-full sm:max-w-sm p-0">
+            <ScrollArea className="h-full p-6">
+              <SheetHeader className="mb-6 p-0">
+                <SheetTitle>Change Your Settings</SheetTitle>
+                <SheetDescription>
+                  Customize your text to SVG conversion settings here.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="flex flex-col gap-4">
+                {/* 配置面板内容 */}
+                <div className="mb-4">
+                  <GoogleFontSelector 
+                    value={selectedFont?.family || ''} 
+                    onChange={(font) => {
+                      if (!customFont) {
+                        setSelectedFont(font)
+                      } else {
+                        toast.info('Custom font is active. Clear it first to use Google Fonts.')
+                      }
+                    }}
+                    fontList={fontList}
+                    isLoading={isLoading}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                  />
+                </div>
+                
+                {/* 自定义字体上传组件 */}
+                <div className="mb-4">
+                  <Label className="mb-2 block">
+                    Custom Font
+                    <span className="text-xs text-gray-500 ms-2">(optional)</span>
+                  </Label>
+                  <CustomFontUploader 
+                    onFontLoaded={handleCustomFontLoaded}
+                    onFontRemoved={handleCustomFontRemoved}
+                    currentFileName={customFontName}
+                  />
+                </div>
+                
+                {/* 字体变体选择器 */}
+                {selectedFont && !customFont && (
+                  <div className="flex flex-col gap-2">
+                    <Label>Font Variant</Label>
+                    <Select value={selectedVariant} onValueChange={setSelectedVariant}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select font variant" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {selectedFont.variants?.map((variant: string) => (
+                          <SelectItem key={variant} value={variant}>
+                            {variant}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="text">Text</Label>
+                  <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder="Enter text to convert" />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="size">Font Size</Label>
+                  <Input id="size" type="number" value={fontSize} onChange={e => setFontSize(Number(e.target.value))} />
+                </div>
+
+                <div className="flex flex-col gap-6 my-2">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="union">Merge Paths</Label>
+                    <Switch id="union" checked={union} onCheckedChange={setUnion} />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="filled">Fill</Label>
+                    <Switch id="filled" checked={filled} onCheckedChange={setFilled} />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="kerning">Kerning</Label>
+                    <Switch id="kerning" checked={kerning} onCheckedChange={setKerning} />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="separate">Separate Paths</Label>
+                    <Switch id="separate" checked={separate} onCheckedChange={setSeparate} />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="bezier-accuracy">Bezier Curve Accuracy</Label>
+                  <Input 
+                    id="bezier-accuracy" 
+                    type="number" 
+                    step="0.1"
+                    min="0.1"
+                    max="1"
+                    value={bezierAccuracy} 
+                    onChange={e => setBezierAccuracy(Number(e.target.value))} 
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="fill-rule">Fill Rule</Label>
+                  <Select value={fillRule} onValueChange={(value: FillRule) => setFillRule(value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select fill rule" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="nonzero">nonzero</SelectItem>
+                      <SelectItem value="evenodd">evenodd</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="stroke">Stroke Color</Label>
+                  <Input id="stroke" type="color" value={stroke} onChange={e => setStroke(e.target.value)} />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="stroke-width">Stroke Width</Label>
+                  <Input id="stroke-width" type="text" value={strokeWidth} onChange={e => setStrokeWidth(e.target.value)} />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="fill">Fill Color</Label>
+                  <Input id="fill" type="color" value={fill} onChange={e => setFill(e.target.value)} />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="dxf-units">DXF Units</Label>
+                  <Select value={dxfUnits} onValueChange={setDxfUnits}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select unit" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.values(makerjs.unitType).map((unit) => (
+                        <SelectItem key={unit} value={unit}>
+                          {unit}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </ScrollArea>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* 桌面端侧边栏 */}
+      <aside className="hidden lg:block w-full max-w-sm bg-muted p-0 flex flex-col gap-0 border-r h-screen">
         <ScrollArea className="h-screen p-6">
           <div className="flex flex-col gap-4">
             <h2 className="text-lg font-bold mb-2">Settings</h2>
-
-
-            {/* Google Fonts 选择器 */}
+            {/* 配置面板内容 */}
             <div className="mb-4">
               <GoogleFontSelector 
                 value={selectedFont?.family || ''} 
@@ -302,7 +464,6 @@ export default function Home() {
               <Input id="size" type="number" value={fontSize} onChange={e => setFontSize(Number(e.target.value))} />
             </div>
 
-            
             <div className="flex flex-col gap-6 my-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="union">Merge Paths</Label>
@@ -386,22 +547,22 @@ export default function Home() {
       </aside>
 
       {/* 右侧预览区 */}
-      <main className="flex-1 flex flex-col items-center justify-start p-8 gap-8">
-        {/* 上区块：SVG预览和代码 */}
-        <div className="w-full max-w-5xl flex flex-row gap-6">
-          {/* SVG 预览 */}
-          <div className="flex-1 flex flex-col gap-2">
-            <h2 className="text-lg font-bold">SVG Preview</h2>
-            <div className="bg-white border rounded-lg h-60 flex items-center justify-center overflow-auto shadow-sm">
-              {loadingFont ? <span className="text-gray-400">Loading font...</span> : (
-                svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">Please enter content</span>
-              )}
+      <main className="flex-1 flex flex-col items-center justify-start p-4 lg:p-8 gap-4 lg:gap-8">
+        {/* 标题行：SVG预览 和 SVG代码 */}
+        <div className="w-full max-w-5xl">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
+            <div className="flex-1">
+              <h2 className="text-lg font-bold mb-4">SVG Preview</h2>
+              <div className="bg-white border rounded-lg h-60 flex items-center justify-center overflow-auto shadow-sm">
+                {loadingFont ? <span className="text-gray-400">Loading font...</span> : (
+                  svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">Please enter content</span>
+                )}
+              </div>
             </div>
-          </div>
-          {/* SVG 代码 */}
-          <div className="flex-1 flex flex-col gap-2">
-            <h2 className="text-lg font-bold">SVG Code</h2>
-            <Textarea id="svg-code" className="w-full h-60 rounded" readOnly value={svgString} />
+            <div className="flex-1">
+              <h2 className="text-lg font-bold mb-4">SVG Code</h2>
+              <Textarea id="svg-code" className="w-full h-60 rounded" readOnly value={svgString} />
+            </div>
           </div>
         </div>
         {/* 操作按钮 */}
@@ -463,7 +624,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="flex flex-col gap-3 w-full">
+          <div className="flex flex-col gap-3 max-w-xs">
             {/* 其他工具页脚区 */}
             <h3 className="text-base font-semibold">Other Tools</h3>
             <div className="flex flex-wrap gap-3">
