@@ -21,12 +21,12 @@ type FillRule = 'nonzero' | 'evenodd';
 
 export default function Home() {
   const [selectedFont, setSelectedFont] = useState<GoogleFontItem | null>({
-    family: 'Lily Script One',
+    family: 'Mea Culpa',
     variants: ['regular'],
     files: {
-      regular: 'https://fonts.gstatic.com/s/lilyscriptone/v15/LhW9MV7ZMfIPdMxeBjBvFN8SXLS4gsSjQNsRMg.ttf'
+      regular: 'https://fonts.gstatic.com/s/meaculpa/v6/AMOTz4GcuWbEIuza8jsZms0QW3mqyg.ttf'
     },
-    menu: 'https://fonts.gstatic.com/s/lilyscriptone/v15/LhW9MV7ZMfIPdMxeBjBvFN8SXLS4gsSjQNsRMg.ttf'
+    menu: 'https://fonts.gstatic.com/s/meaculpa/v6/AMOTz4GcuWbEIuza8jsZms0QW3mqyg.ttf'
   })
   const [selectedVariant, setSelectedVariant] = useState<string>('regular')
   const [text, setText] = useState('Nexus')
@@ -157,15 +157,15 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('')
 
   const recommendFonts = [
+    'Mea Culpa',
     'Lily Script One',
+    'Kapakana',
     'Protest Riot',
     'Sonsie One',
     'Pacifico', 
     'Sofadi One',
     'Risque',
     'Oooh Baby', 
-    'Romanesco', 
-    'Kapakana',
   ]
 
   const recommendTextFonts = [
