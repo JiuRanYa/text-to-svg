@@ -628,10 +628,10 @@ export default function Home() {
             </div>
 
             {/* 动画控制选项 */}
-            <div className="border-t pt-4 mt-4">
-              <h4 className="text-sm font-semibold mb-3">Animation Settings</h4>
+            <div className="border-t pt-4 mt-4 flex flex-col gap-6">
+              <h4 className="text-sm font-semibold">Animation Settings</h4>
               
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between">
                 <Label htmlFor="animation-enabled">Enable Animation</Label>
                 <Switch 
                   id="animation-enabled" 
@@ -642,7 +642,7 @@ export default function Home() {
 
               {animationEnabled && (
                 <>
-                  <div className="flex flex-col gap-2 mb-4">
+                  <div className="flex flex-col gap-2">
                     <Label htmlFor="animation-type">Animation Type</Label>
                     <Select value={animationType} onValueChange={setAnimationType}>
                       <SelectTrigger>
@@ -657,7 +657,7 @@ export default function Home() {
                     </Select>
                   </div>
 
-                  <div className="flex flex-col gap-2 mb-4">
+                  <div className="flex flex-col gap-2">
                     <Label htmlFor="animation-speed">Animation Speed</Label>
                     <Select value={animationSpeed} onValueChange={setAnimationSpeed}>
                       <SelectTrigger>
