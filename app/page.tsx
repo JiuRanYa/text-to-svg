@@ -14,7 +14,7 @@ import debounce from 'lodash/debounce'
 import { toast } from 'sonner'
 import { ScrollArea } from '@/core/ui/scroll-area'
 import { CustomFontUploader } from './_component/CustomFontUploader'
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from '@/core/ui/sheet'
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/core/ui/sheet'
 import { Menu } from 'lucide-react'
 
 type FillRule = 'nonzero' | 'evenodd';
@@ -320,6 +320,209 @@ export default function Home() {
 
   const [isOpen, setIsOpen] = useState(false)
 
+  const renderAnimationSettings = () => (
+    <div className="border-t pt-4 mt-4 flex flex-col gap-6">
+      <h4 className="text-sm font-semibold">Animation Settings</h4>
+      
+      <div className="flex items-center justify-between">
+        <Label htmlFor="animation-enabled">Enable Animation</Label>
+        <Switch 
+          id="animation-enabled" 
+          checked={animationEnabled} 
+          onCheckedChange={setAnimationEnabled} 
+        />
+      </div>
+
+      {animationEnabled && (
+        <>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="animation-type">Animation Type</Label>
+            <Select value={animationType} onValueChange={setAnimationType}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select animation type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="signature">Signature Draw</SelectItem>
+                <SelectItem value="draw">Simple Draw</SelectItem>
+                <SelectItem value="fade-in">Fade In</SelectItem>
+                <SelectItem value="pulse">Pulse</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="animation-speed">Animation Speed</Label>
+            <Select value={animationSpeed} onValueChange={setAnimationSpeed}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select speed" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="slow">Slow</SelectItem>
+                <SelectItem value="normal">Normal</SelectItem>
+                <SelectItem value="fast">Fast</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <Label htmlFor="animation-paused">Pause Animation</Label>
+            <Switch 
+              id="animation-paused" 
+              checked={animationPaused} 
+              onCheckedChange={setAnimationPaused} 
+            />
+          </div>
+        </>
+      )}
+    </div>
+  )
+
+  const renderSettings = () => (
+    <div className="flex flex-col gap-4">
+      <h2 className="text-lg font-bold mb-2">Settings</h2>
+      {/* 配置面板内容 */}
+      <div className="mb-4">
+        <GoogleFontSelector 
+          value={selectedFont?.family || ''} 
+          onChange={(font) => {
+            if (!customFont) {
+              setSelectedFont(font)
+            } else {
+              toast.info('Custom font is active. Clear it first to use Google Fonts.')
+            }
+          }}
+          fontList={fontList}
+          isLoading={isLoading}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+        />
+      </div>
+      
+      {/* 自定义字体上传组件 */}
+      <div className="mb-4">
+        <Label className="mb-2 block">
+          Custom Font
+          <span className="text-xs text-gray-500 ms-2">(optional)</span>
+        </Label>
+        <CustomFontUploader 
+          onFontLoaded={handleCustomFontLoaded}
+          onFontRemoved={handleCustomFontRemoved}
+          currentFileName={customFontName}
+        />
+      </div>
+      
+      {/* 字体变体选择器 */}
+      {selectedFont && !customFont && (
+        <div className="flex flex-col gap-2">
+          <Label>Font Variant</Label>
+          <Select value={selectedVariant} onValueChange={setSelectedVariant}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select font variant" />
+            </SelectTrigger>
+            <SelectContent>
+              {selectedFont.variants?.map((variant: string) => (
+                <SelectItem key={variant} value={variant}>
+                  {variant}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+      
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="text">Text</Label>
+        <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder="Enter text to convert" />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="size">Font Size</Label>
+        <Input id="size" type="number" value={fontSize} onChange={e => setFontSize(Number(e.target.value))} />
+      </div>
+
+      <div className="flex flex-col gap-6 my-2">
+        <div className="flex items-center justify-between">
+          <Label htmlFor="union">Merge Paths</Label>
+          <Switch id="union" checked={union} onCheckedChange={setUnion} />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <Label htmlFor="filled">Fill</Label>
+          <Switch id="filled" checked={filled} onCheckedChange={setFilled} />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <Label htmlFor="kerning">Kerning</Label>
+          <Switch id="kerning" checked={kerning} onCheckedChange={setKerning} />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <Label htmlFor="separate">Separate Paths</Label>
+          <Switch id="separate" checked={separate} onCheckedChange={setSeparate} />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="bezier-accuracy">Bezier Curve Accuracy</Label>
+        <Input 
+          id="bezier-accuracy" 
+          type="number" 
+          step="0.1"
+          min="0.1"
+          max="1"
+          value={bezierAccuracy} 
+          onChange={e => setBezierAccuracy(Number(e.target.value))} 
+        />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="fill-rule">Fill Rule</Label>
+        <Select value={fillRule} onValueChange={(value: FillRule) => setFillRule(value)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select fill rule" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="nonzero">nonzero</SelectItem>
+            <SelectItem value="evenodd">evenodd</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="stroke">Stroke Color</Label>
+        <Input id="stroke" type="color" value={stroke} onChange={e => setStroke(e.target.value)} />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="stroke-width">Stroke Width</Label>
+        <Input id="stroke-width" type="text" value={strokeWidth} onChange={e => setStrokeWidth(e.target.value)} />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="fill">Fill Color</Label>
+        <Input id="fill" type="color" value={fill} onChange={e => setFill(e.target.value)} />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="dxf-units">DXF Units</Label>
+        <Select value={dxfUnits} onValueChange={setDxfUnits}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select unit" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.values(makerjs.unitType).map((unit) => (
+              <SelectItem key={unit} value={unit}>
+                {unit}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {renderAnimationSettings()}
+    </div>
+  )
+
   return (
     <div className="flex min-h-screen overflow-hidden">
       {/* 移动端菜单按钮 */}
@@ -331,153 +534,16 @@ export default function Home() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-full sm:max-w-sm p-0">
+
             <ScrollArea className="h-full p-6">
+
               <SheetHeader className="mb-6 p-0">
                 <SheetTitle>Change Your Settings</SheetTitle>
                 <SheetDescription>
                   Customize your text to SVG conversion settings here.
                 </SheetDescription>
               </SheetHeader>
-              <div className="flex flex-col gap-4">
-                {/* 配置面板内容 */}
-                <div className="mb-4">
-                  <GoogleFontSelector 
-                    value={selectedFont?.family || ''} 
-                    onChange={(font) => {
-                      if (!customFont) {
-                        setSelectedFont(font)
-                      } else {
-                        toast.info('Custom font is active. Clear it first to use Google Fonts.')
-                      }
-                    }}
-                    fontList={fontList}
-                    isLoading={isLoading}
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                  />
-                </div>
-                
-                {/* 自定义字体上传组件 */}
-                <div className="mb-4">
-                  <Label className="mb-2 block">
-                    Custom Font
-                    <span className="text-xs text-gray-500 ms-2">(optional)</span>
-                  </Label>
-                  <CustomFontUploader 
-                    onFontLoaded={handleCustomFontLoaded}
-                    onFontRemoved={handleCustomFontRemoved}
-                    currentFileName={customFontName}
-                  />
-                </div>
-                
-                {/* 字体变体选择器 */}
-                {selectedFont && !customFont && (
-                  <div className="flex flex-col gap-2">
-                    <Label>Font Variant</Label>
-                    <Select value={selectedVariant} onValueChange={setSelectedVariant}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select font variant" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {selectedFont.variants?.map((variant: string) => (
-                          <SelectItem key={variant} value={variant}>
-                            {variant}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-                
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="text">Text</Label>
-                  <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder="Enter text to convert" />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="size">Font Size</Label>
-                  <Input id="size" type="number" value={fontSize} onChange={e => setFontSize(Number(e.target.value))} />
-                </div>
-
-                <div className="flex flex-col gap-6 my-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="union">Merge Paths</Label>
-                    <Switch id="union" checked={union} onCheckedChange={setUnion} />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="filled">Fill</Label>
-                    <Switch id="filled" checked={filled} onCheckedChange={setFilled} />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="kerning">Kerning</Label>
-                    <Switch id="kerning" checked={kerning} onCheckedChange={setKerning} />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="separate">Separate Paths</Label>
-                    <Switch id="separate" checked={separate} onCheckedChange={setSeparate} />
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="bezier-accuracy">Bezier Curve Accuracy</Label>
-                  <Input 
-                    id="bezier-accuracy" 
-                    type="number" 
-                    step="0.1"
-                    min="0.1"
-                    max="1"
-                    value={bezierAccuracy} 
-                    onChange={e => setBezierAccuracy(Number(e.target.value))} 
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="fill-rule">Fill Rule</Label>
-                  <Select value={fillRule} onValueChange={(value: FillRule) => setFillRule(value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select fill rule" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="nonzero">nonzero</SelectItem>
-                      <SelectItem value="evenodd">evenodd</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="stroke">Stroke Color</Label>
-                  <Input id="stroke" type="color" value={stroke} onChange={e => setStroke(e.target.value)} />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="stroke-width">Stroke Width</Label>
-                  <Input id="stroke-width" type="text" value={strokeWidth} onChange={e => setStrokeWidth(e.target.value)} />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="fill">Fill Color</Label>
-                  <Input id="fill" type="color" value={fill} onChange={e => setFill(e.target.value)} />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="dxf-units">DXF Units</Label>
-                  <Select value={dxfUnits} onValueChange={setDxfUnits}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select unit" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.values(makerjs.unitType).map((unit) => (
-                        <SelectItem key={unit} value={unit}>
-                          {unit}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+              {renderSettings()}
             </ScrollArea>
           </SheetContent>
         </Sheet>
@@ -486,203 +552,7 @@ export default function Home() {
       {/* 桌面端侧边栏 */}
       <aside className="hidden lg:block w-full max-w-sm bg-muted p-0 flex flex-col gap-0 border-r h-screen">
         <ScrollArea className="h-screen p-6">
-          <div className="flex flex-col gap-4">
-            <h2 className="text-lg font-bold mb-2">Settings</h2>
-            {/* 配置面板内容 */}
-            <div className="mb-4">
-              <GoogleFontSelector 
-                value={selectedFont?.family || ''} 
-                onChange={(font) => {
-                  if (!customFont) {
-                    setSelectedFont(font)
-                  } else {
-                    toast.info('Custom font is active. Clear it first to use Google Fonts.')
-                  }
-                }}
-                fontList={fontList}
-                isLoading={isLoading}
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-              />
-            </div>
-            
-            {/* 自定义字体上传组件 */}
-            <div className="mb-4">
-              <Label className="mb-2 block">
-                Custom Font
-                <span className="text-xs text-gray-500 ms-2">(optional)</span>
-              </Label>
-              <CustomFontUploader 
-                onFontLoaded={handleCustomFontLoaded}
-                onFontRemoved={handleCustomFontRemoved}
-                currentFileName={customFontName}
-              />
-            </div>
-            
-            {/* 字体变体选择器 */}
-            {selectedFont && !customFont && (
-              <div className="flex flex-col gap-2">
-                <Label>Font Variant</Label>
-                <Select value={selectedVariant} onValueChange={setSelectedVariant}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select font variant" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {selectedFont.variants?.map((variant: string) => (
-                      <SelectItem key={variant} value={variant}>
-                        {variant}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-            
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="text">Text</Label>
-              <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder="Enter text to convert" />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="size">Font Size</Label>
-              <Input id="size" type="number" value={fontSize} onChange={e => setFontSize(Number(e.target.value))} />
-            </div>
-
-            <div className="flex flex-col gap-6 my-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="union">Merge Paths</Label>
-                <Switch id="union" checked={union} onCheckedChange={setUnion} />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <Label htmlFor="filled">Fill</Label>
-                <Switch id="filled" checked={filled} onCheckedChange={setFilled} />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <Label htmlFor="kerning">Kerning</Label>
-                <Switch id="kerning" checked={kerning} onCheckedChange={setKerning} />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <Label htmlFor="separate">Separate Paths</Label>
-                <Switch id="separate" checked={separate} onCheckedChange={setSeparate} />
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="bezier-accuracy">Bezier Curve Accuracy</Label>
-              <Input 
-                id="bezier-accuracy" 
-                type="number" 
-                step="0.1"
-                min="0.1"
-                max="1"
-                value={bezierAccuracy} 
-                onChange={e => setBezierAccuracy(Number(e.target.value))} 
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="fill-rule">Fill Rule</Label>
-              <Select value={fillRule} onValueChange={(value: FillRule) => setFillRule(value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select fill rule" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="nonzero">nonzero</SelectItem>
-                  <SelectItem value="evenodd">evenodd</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="stroke">Stroke Color</Label>
-              <Input id="stroke" type="color" value={stroke} onChange={e => setStroke(e.target.value)} />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="stroke-width">Stroke Width</Label>
-              <Input id="stroke-width" type="text" value={strokeWidth} onChange={e => setStrokeWidth(e.target.value)} />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="fill">Fill Color</Label>
-              <Input id="fill" type="color" value={fill} onChange={e => setFill(e.target.value)} />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="dxf-units">DXF Units</Label>
-              <Select value={dxfUnits} onValueChange={setDxfUnits}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select unit" />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.values(makerjs.unitType).map((unit) => (
-                    <SelectItem key={unit} value={unit}>
-                      {unit}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* 动画控制选项 */}
-            <div className="border-t pt-4 mt-4 flex flex-col gap-6">
-              <h4 className="text-sm font-semibold">Animation Settings</h4>
-              
-              <div className="flex items-center justify-between">
-                <Label htmlFor="animation-enabled">Enable Animation</Label>
-                <Switch 
-                  id="animation-enabled" 
-                  checked={animationEnabled} 
-                  onCheckedChange={setAnimationEnabled} 
-                />
-              </div>
-
-              {animationEnabled && (
-                <>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="animation-type">Animation Type</Label>
-                    <Select value={animationType} onValueChange={setAnimationType}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select animation type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="signature">Signature Draw</SelectItem>
-                        <SelectItem value="draw">Simple Draw</SelectItem>
-                        <SelectItem value="fade-in">Fade In</SelectItem>
-                        <SelectItem value="pulse">Pulse</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="animation-speed">Animation Speed</Label>
-                    <Select value={animationSpeed} onValueChange={setAnimationSpeed}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select speed" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="slow">Slow</SelectItem>
-                        <SelectItem value="normal">Normal</SelectItem>
-                        <SelectItem value="fast">Fast</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="animation-paused">Pause Animation</Label>
-                    <Switch 
-                      id="animation-paused" 
-                      checked={animationPaused} 
-                      onCheckedChange={setAnimationPaused} 
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
+          {renderSettings()}
         </ScrollArea>
       </aside>
 
