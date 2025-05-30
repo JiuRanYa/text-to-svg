@@ -48,6 +48,12 @@ export default function Home() {
   const [fillRule, setFillRule] = useState<FillRule>('evenodd')
   const [dxfUnits, setDxfUnits] = useState('mm')
 
+  // 动画相关状态
+  const [animationEnabled, setAnimationEnabled] = useState(false)
+  const [animationType, setAnimationType] = useState('signature')
+  const [animationSpeed, setAnimationSpeed] = useState('normal')
+  const [animationPaused, setAnimationPaused] = useState(false)
+
   const [fontList, setFontList] = useState<GoogleFontItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -167,20 +173,98 @@ export default function Home() {
           scalingStroke: true,
         })
         
+        // 如果启用动画，修改SVG添加动画类（用于预览）
+        let finalSvg = svg
+        if (animationEnabled && svg) {
+          const speedDuration = animationSpeed === 'slow' ? '6s' : animationSpeed === 'fast' ? '1.5s' : '3s'
+          const playState = animationPaused ? 'paused' : 'running'
+          
+          // 生成完整的动画CSS
+          let animationCSS = ''
+          
+          if (animationType === 'signature') {
+            animationCSS = `
+              <style>
+                path {
+                  stroke-dasharray: 2400;
+                  stroke-dashoffset: 2400;
+                  fill: transparent;
+                  animation: drawSignature ${speedDuration} linear infinite both;
+                  animation-play-state: ${playState};
+                  stroke-width: 2px;
+                  stroke: currentColor;
+                }
+                @keyframes drawSignature {
+                  0% { stroke-dashoffset: 2400; }
+                  10% { fill: transparent; }
+                  25%, 85% { stroke-dashoffset: 0; fill: currentColor; }
+                  95%, to { stroke-dashoffset: 2400; fill: transparent; }
+                }
+              </style>`
+          } else if (animationType === 'draw') {
+            animationCSS = `
+              <style>
+                path {
+                  stroke-dasharray: 1000;
+                  stroke-dashoffset: 1000;
+                  animation: draw ${speedDuration} ease-in-out infinite;
+                  animation-play-state: ${playState};
+                }
+                @keyframes draw {
+                  0% { stroke-dashoffset: 1000; }
+                  50% { stroke-dashoffset: 0; }
+                  100% { stroke-dashoffset: -1000; }
+                }
+              </style>`
+          } else if (animationType === 'fade-in') {
+            animationCSS = `
+              <style>
+                path {
+                  opacity: 0;
+                  animation: fadeIn ${speedDuration} ease-in-out infinite;
+                  animation-play-state: ${playState};
+                }
+                @keyframes fadeIn {
+                  0% { opacity: 0; transform: scale(0.8); }
+                  50% { opacity: 1; transform: scale(1); }
+                  100% { opacity: 0; transform: scale(0.8); }
+                }
+              </style>`
+          } else if (animationType === 'pulse') {
+            animationCSS = `
+              <style>
+                path {
+                  animation: pulse ${speedDuration} ease-in-out infinite;
+                  animation-play-state: ${playState};
+                }
+                @keyframes pulse {
+                  0%, 100% { transform: scale(1); opacity: 1; }
+                  50% { transform: scale(1.05); opacity: 0.8; }
+                }
+              </style>`
+          }
+          
+          // 将CSS插入到SVG中
+          finalSvg = svg.replace(
+            /<svg([^>]*)>/,
+            `<svg$1>${animationCSS}`
+          )
+        }
+        
         // 生成 DXF
         const dxf = makerjs.exporter.toDXF(textModel, { 
           units: dxfUnits,
           usePOLYLINE: true 
         })
         
-        setSvgPath(svg)
+        setSvgPath(finalSvg)
         setDxfPath(dxf)
       } catch (error) {
         console.error('Error generating SVG:', error)
         setSvgPath('')
       }
     }, 200),
-    [currentFont, text, fontSize, union, filled, kerning, separate, bezierAccuracy, fill, stroke, strokeWidth, fillRule, dxfUnits]
+    [currentFont, text, fontSize, union, filled, kerning, separate, bezierAccuracy, fill, stroke, strokeWidth, fillRule, dxfUnits, animationEnabled, animationType, animationSpeed, animationPaused]
   )
 
   // 监听所有可能影响 SVG 生成的参数变化
@@ -541,6 +625,62 @@ export default function Home() {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* 动画控制选项 */}
+            <div className="border-t pt-4 mt-4">
+              <h4 className="text-sm font-semibold mb-3">Animation Settings</h4>
+              
+              <div className="flex items-center justify-between mb-4">
+                <Label htmlFor="animation-enabled">Enable Animation</Label>
+                <Switch 
+                  id="animation-enabled" 
+                  checked={animationEnabled} 
+                  onCheckedChange={setAnimationEnabled} 
+                />
+              </div>
+
+              {animationEnabled && (
+                <>
+                  <div className="flex flex-col gap-2 mb-4">
+                    <Label htmlFor="animation-type">Animation Type</Label>
+                    <Select value={animationType} onValueChange={setAnimationType}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select animation type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="signature">Signature Draw</SelectItem>
+                        <SelectItem value="draw">Simple Draw</SelectItem>
+                        <SelectItem value="fade-in">Fade In</SelectItem>
+                        <SelectItem value="pulse">Pulse</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex flex-col gap-2 mb-4">
+                    <Label htmlFor="animation-speed">Animation Speed</Label>
+                    <Select value={animationSpeed} onValueChange={setAnimationSpeed}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select speed" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="slow">Slow</SelectItem>
+                        <SelectItem value="normal">Normal</SelectItem>
+                        <SelectItem value="fast">Fast</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="animation-paused">Pause Animation</Label>
+                    <Switch 
+                      id="animation-paused" 
+                      checked={animationPaused} 
+                      onCheckedChange={setAnimationPaused} 
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </ScrollArea>
