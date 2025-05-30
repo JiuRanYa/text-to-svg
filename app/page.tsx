@@ -62,7 +62,7 @@ export default function Home() {
         normal: '3s',
         fast: '1.5s'
       },
-      css: (speedDuration: string, playState: string) => `
+      css: (speedDuration: string, playState: string, fillColor: string) => `
         .animated-svg path {
           stroke-dasharray: 2400;
           stroke-dashoffset: 2400;
@@ -70,12 +70,12 @@ export default function Home() {
           animation: drawSignature ${speedDuration} linear infinite both;
           animation-play-state: ${playState};
           stroke-width: 2px;
-          stroke: currentColor;
+          stroke: ${fillColor};
         }
         @keyframes drawSignature {
           0% { stroke-dashoffset: 2400; }
           10% { fill: transparent; }
-          25%, 85% { stroke-dashoffset: 0; fill: currentColor; }
+          25%, 85% { stroke-dashoffset: 0; fill: ${fillColor}; }
           95%, to { stroke-dashoffset: 2400; fill: transparent; }
         }
       `
@@ -86,10 +86,11 @@ export default function Home() {
         normal: '3s',
         fast: '1.5s'
       },
-      css: (speedDuration: string, playState: string) => `
+      css: (speedDuration: string, playState: string, fillColor: string) => `
         .animated-svg path {
           stroke-dasharray: 1000;
           stroke-dashoffset: 1000;
+          stroke: ${fillColor};
           animation: draw ${speedDuration} ease-in-out infinite;
           animation-play-state: ${playState};
         }
@@ -106,9 +107,10 @@ export default function Home() {
         normal: '3s',
         fast: '1.5s'
       },
-      css: (speedDuration: string, playState: string) => `
+      css: (speedDuration: string, playState: string, fillColor: string) => `
         .animated-svg path {
           opacity: 0;
+          fill: ${fillColor};
           animation: fadeIn ${speedDuration} ease-in-out infinite;
           animation-play-state: ${playState};
         }
@@ -125,8 +127,9 @@ export default function Home() {
         normal: '3s',
         fast: '1.5s'
       },
-      css: (speedDuration: string, playState: string) => `
+      css: (speedDuration: string, playState: string, fillColor: string) => `
         .animated-svg path {
+          fill: ${fillColor};
           animation: pulse ${speedDuration} ease-in-out infinite;
           animation-play-state: ${playState};
         }
@@ -139,14 +142,14 @@ export default function Home() {
   }
 
   // 生成动画 CSS
-  const generateAnimationCSS = (type: string, speed: string, paused: boolean) => {
+  const generateAnimationCSS = (type: string, speed: string, paused: boolean, fillColor: string) => {
     const config = animationConfigs[type as keyof typeof animationConfigs]
     if (!config) return ''
     
     const speedDuration = config.duration[speed as keyof typeof config.duration]
     const playState = paused ? 'paused' : 'running'
     
-    return `<style>${config.css(speedDuration, playState)}</style>`
+    return `<style>${config.css(speedDuration, playState, fillColor)}</style>`
   }
 
   const [fontList, setFontList] = useState<GoogleFontItem[]>([])
@@ -277,7 +280,7 @@ export default function Home() {
         // 处理动画
         let finalSvg = svg
         if (animationEnabled && svg) {
-          const animationCSS = generateAnimationCSS(animationType, animationSpeed, animationPaused)
+          const animationCSS = generateAnimationCSS(animationType, animationSpeed, animationPaused, fill)
           finalSvg = svg.replace(
             /<svg([^>]*)>/,
             `<svg$1 class="animated-svg">${animationCSS}`
