@@ -6,6 +6,11 @@ This project is a high-quality online SVG font generator. It allows you to conve
 
 ---
 
+## Preview Animation
+
+<img src="https://github.com/JiuRanYa/text-to-svg/blob/main/public/preview.svg" width="200" alt="Preview Animation">
+
+
 ## Features
 
 - Google Fonts selection and search
