@@ -120,3 +120,107 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* SVG Animation Styles */
+.animated-signature path {
+  stroke-dasharray: 2400;
+  stroke-dashoffset: 2400;
+  fill: transparent;
+  animation: drawSignature 8s linear infinite both;
+  stroke-width: 2px;
+  stroke: currentColor;
+}
+
+@keyframes drawSignature {
+  0% {
+    stroke-dashoffset: 2400;
+  }
+  10% {
+    fill: transparent;
+  }
+  25%,
+  85% {
+    stroke-dashoffset: 0;
+    fill: currentColor;
+  }
+  95%,
+  to {
+    stroke-dashoffset: 2400;
+    fill: transparent;
+  }
+}
+
+.animated-draw path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw 4s ease-in-out infinite;
+}
+
+@keyframes draw {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -1000;
+  }
+}
+
+.animated-fade-in path {
+  opacity: 0;
+  animation: fadeIn 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+.animated-pulse path {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+/* 动画速度控制类 */
+.animation-slow {
+  animation-duration: 6s !important;
+}
+
+.animation-normal {
+  animation-duration: 3s !important;
+}
+
+.animation-fast {
+  animation-duration: 1.5s !important;
+}
+
+/* 动画播放控制 */
+.animation-paused {
+  animation-play-state: paused !important;
+}
+
+.animation-running {
+  animation-play-state: running !important;
+}
