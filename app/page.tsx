@@ -54,6 +54,101 @@ export default function Home() {
   const [animationSpeed, setAnimationSpeed] = useState('normal')
   const [animationPaused, setAnimationPaused] = useState(false)
 
+  // 动画配置
+  const animationConfigs = {
+    signature: {
+      duration: {
+        slow: '6s',
+        normal: '3s',
+        fast: '1.5s'
+      },
+      css: (speedDuration: string, playState: string) => `
+        .animated-svg path {
+          stroke-dasharray: 2400;
+          stroke-dashoffset: 2400;
+          fill: transparent;
+          animation: drawSignature ${speedDuration} linear infinite both;
+          animation-play-state: ${playState};
+          stroke-width: 2px;
+          stroke: currentColor;
+        }
+        @keyframes drawSignature {
+          0% { stroke-dashoffset: 2400; }
+          10% { fill: transparent; }
+          25%, 85% { stroke-dashoffset: 0; fill: currentColor; }
+          95%, to { stroke-dashoffset: 2400; fill: transparent; }
+        }
+      `
+    },
+    draw: {
+      duration: {
+        slow: '6s',
+        normal: '3s',
+        fast: '1.5s'
+      },
+      css: (speedDuration: string, playState: string) => `
+        .animated-svg path {
+          stroke-dasharray: 1000;
+          stroke-dashoffset: 1000;
+          animation: draw ${speedDuration} ease-in-out infinite;
+          animation-play-state: ${playState};
+        }
+        @keyframes draw {
+          0% { stroke-dashoffset: 1000; }
+          50% { stroke-dashoffset: 0; }
+          100% { stroke-dashoffset: -1000; }
+        }
+      `
+    },
+    'fade-in': {
+      duration: {
+        slow: '6s',
+        normal: '3s',
+        fast: '1.5s'
+      },
+      css: (speedDuration: string, playState: string) => `
+        .animated-svg path {
+          opacity: 0;
+          animation: fadeIn ${speedDuration} ease-in-out infinite;
+          animation-play-state: ${playState};
+        }
+        @keyframes fadeIn {
+          0% { opacity: 0; transform: scale(0.8); }
+          50% { opacity: 1; transform: scale(1); }
+          100% { opacity: 0; transform: scale(0.8); }
+        }
+      `
+    },
+    pulse: {
+      duration: {
+        slow: '6s',
+        normal: '3s',
+        fast: '1.5s'
+      },
+      css: (speedDuration: string, playState: string) => `
+        .animated-svg path {
+          animation: pulse ${speedDuration} ease-in-out infinite;
+          animation-play-state: ${playState};
+        }
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.05); opacity: 0.8; }
+        }
+      `
+    }
+  }
+
+  // 生成动画 CSS
+  const generateAnimationCSS = (type: string, speed: string, paused: boolean) => {
+    const config = animationConfigs[type as keyof typeof animationConfigs]
+    if (!config) return ''
+    
+    const speedDuration = config.duration[speed as keyof typeof config.duration]
+    const playState = paused ? 'paused' : 'running'
+    
+    return `<style>${config.css(speedDuration, playState)}</style>`
+  }
+
   const [fontList, setFontList] = useState<GoogleFontItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -179,78 +274,10 @@ export default function Home() {
           usePOLYLINE: true 
         })
         
-        // 如果启用动画，修改SVG添加动画类（用于预览）
+        // 处理动画
         let finalSvg = svg
         if (animationEnabled && svg) {
-          const speedDuration = animationSpeed === 'slow' ? '6s' : animationSpeed === 'fast' ? '1.5s' : '3s'
-          const playState = animationPaused ? 'paused' : 'running'
-          
-          // 生成完整的动画CSS
-          let animationCSS = ''
-          
-          if (animationType === 'signature') {
-            animationCSS = `
-              <style>
-                .animated-svg path {
-                  stroke-dasharray: 2400;
-                  stroke-dashoffset: 2400;
-                  fill: transparent;
-                  animation: drawSignature ${speedDuration} linear infinite both;
-                  animation-play-state: ${playState};
-                  stroke-width: 2px;
-                  stroke: currentColor;
-                }
-                @keyframes drawSignature {
-                  0% { stroke-dashoffset: 2400; }
-                  10% { fill: transparent; }
-                  25%, 85% { stroke-dashoffset: 0; fill: currentColor; }
-                  95%, to { stroke-dashoffset: 2400; fill: transparent; }
-                }
-              </style>`
-          } else if (animationType === 'draw') {
-            animationCSS = `
-              <style>
-                .animated-svg path {
-                  stroke-dasharray: 1000;
-                  stroke-dashoffset: 1000;
-                  animation: draw ${speedDuration} ease-in-out infinite;
-                  animation-play-state: ${playState};
-                }
-                @keyframes draw {
-                  0% { stroke-dashoffset: 1000; }
-                  50% { stroke-dashoffset: 0; }
-                  100% { stroke-dashoffset: -1000; }
-                }
-              </style>`
-          } else if (animationType === 'fade-in') {
-            animationCSS = `
-              <style>
-                .animated-svg path {
-                  opacity: 0;
-                  animation: fadeIn ${speedDuration} ease-in-out infinite;
-                  animation-play-state: ${playState};
-                }
-                @keyframes fadeIn {
-                  0% { opacity: 0; transform: scale(0.8); }
-                  50% { opacity: 1; transform: scale(1); }
-                  100% { opacity: 0; transform: scale(0.8); }
-                }
-              </style>`
-          } else if (animationType === 'pulse') {
-            animationCSS = `
-              <style>
-                .animated-svg path {
-                  animation: pulse ${speedDuration} ease-in-out infinite;
-                  animation-play-state: ${playState};
-                }
-                @keyframes pulse {
-                  0%, 100% { transform: scale(1); opacity: 1; }
-                  50% { transform: scale(1.05); opacity: 0.8; }
-                }
-              </style>`
-          }
-          
-          // 将CSS插入到SVG中，并添加animated-svg类
+          const animationCSS = generateAnimationCSS(animationType, animationSpeed, animationPaused)
           finalSvg = svg.replace(
             /<svg([^>]*)>/,
             `<svg$1 class="animated-svg">${animationCSS}`
