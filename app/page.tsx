@@ -173,6 +173,12 @@ export default function Home() {
           scalingStroke: true,
         })
         
+        // 生成 DXF
+        const dxf = makerjs.exporter.toDXF(textModel, { 
+          units: dxfUnits,
+          usePOLYLINE: true 
+        })
+        
         // 如果启用动画，修改SVG添加动画类（用于预览）
         let finalSvg = svg
         if (animationEnabled && svg) {
@@ -185,7 +191,7 @@ export default function Home() {
           if (animationType === 'signature') {
             animationCSS = `
               <style>
-                path {
+                .animated-svg path {
                   stroke-dasharray: 2400;
                   stroke-dashoffset: 2400;
                   fill: transparent;
@@ -204,7 +210,7 @@ export default function Home() {
           } else if (animationType === 'draw') {
             animationCSS = `
               <style>
-                path {
+                .animated-svg path {
                   stroke-dasharray: 1000;
                   stroke-dashoffset: 1000;
                   animation: draw ${speedDuration} ease-in-out infinite;
@@ -219,7 +225,7 @@ export default function Home() {
           } else if (animationType === 'fade-in') {
             animationCSS = `
               <style>
-                path {
+                .animated-svg path {
                   opacity: 0;
                   animation: fadeIn ${speedDuration} ease-in-out infinite;
                   animation-play-state: ${playState};
@@ -233,7 +239,7 @@ export default function Home() {
           } else if (animationType === 'pulse') {
             animationCSS = `
               <style>
-                path {
+                .animated-svg path {
                   animation: pulse ${speedDuration} ease-in-out infinite;
                   animation-play-state: ${playState};
                 }
@@ -244,18 +250,12 @@ export default function Home() {
               </style>`
           }
           
-          // 将CSS插入到SVG中
+          // 将CSS插入到SVG中，并添加animated-svg类
           finalSvg = svg.replace(
             /<svg([^>]*)>/,
-            `<svg$1>${animationCSS}`
+            `<svg$1 class="animated-svg">${animationCSS}`
           )
         }
-        
-        // 生成 DXF
-        const dxf = makerjs.exporter.toDXF(textModel, { 
-          units: dxfUnits,
-          usePOLYLINE: true 
-        })
         
         setSvgPath(finalSvg)
         setDxfPath(dxf)
