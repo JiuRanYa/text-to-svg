@@ -21,7 +21,12 @@ This project is a high-quality online SVG font generator. It allows you to conve
 
 ---
 
-## Usage
+
+## Stackblitz
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/~/github.com/JiuRanYa/text-to-svg)
+
+## Local Development
 
 1. Clone this repo
 
@@ -46,10 +51,6 @@ This project is a high-quality online SVG font generator. It allows you to conve
 4. Visit local
 
    Open your browser and visit [http://localhost:3000](http://localhost:3000)
-
-or open with stackblitz
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/~/github.com/JiuRanYa/text-to-svg)
 
 ---
 
