@@ -13,7 +13,7 @@ export default function TutorialsPage() {
     <InnerPageLayout
       title="Text to SVG Tutorials"
       description="Learn how to convert text to SVG paths with our comprehensive step-by-step guides."
-      keyword="Text to SVG Tutorials"
+      keyword="How to convert text to SVG"
     >
       <div className="grid gap-6">
         <div className="rounded-lg border p-6">

@@ -12,7 +12,7 @@ export default function ExamplesPage() {
     <InnerPageLayout
       title="Text to SVG Examples"
       description="Explore our collection of text to SVG conversion examples and get inspired for your next project."
-      keyword="Text to SVG Examples"
+      keyword="ttf to svg, text, svg path"
     >
       <div className="grid gap-6 md:grid-cols-2">
         <div className="rounded-lg border p-6">

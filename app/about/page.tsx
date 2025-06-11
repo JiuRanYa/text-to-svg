@@ -12,7 +12,7 @@ export default function AboutPage() {
     <InnerPageLayout
       title="About Text to SVG Converter"
       description="Learn about our powerful tool for converting text to SVG paths and creating vector graphics."
-      keyword="Text to SVG Converter"
+      keyword="About Online Text to SVG Converter"
     >
       <div className="prose prose-gray max-w-none">
         <h2 className="text-2xl font-semibold mt-8 mb-4">Our Mission</h2>
