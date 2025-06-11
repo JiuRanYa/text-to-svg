@@ -1,5 +1,27 @@
+# Text to SVG Converter - Robots.txt
 User-agent: *
 Allow: /
-Disallow: /api
+Allow: /tutorials
+Allow: /examples
+Allow: /about
 
+# Disallow API and private routes
+Disallow: /api
+Disallow: /_next
+Disallow: /static
+
+# Crawl delay
+Crawl-delay: 10
+
+# Sitemap
 Sitemap: https://text-to-svg.tool.tokyo/sitemap.xml
+
+# Additional rules for specific bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Yandex
+Allow: /
