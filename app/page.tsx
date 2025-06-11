@@ -557,7 +557,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen overflow-hidden">
       {/* 移动端菜单按钮 */}
-      <div className="lg:hidden fixed top-4 right-4 z-50">
+      <div className="lg:hidden fixed top-[80px] right-4 z-50">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon">
