@@ -6,12 +6,37 @@
 - [Google Font to SVG Path](https://text-to-svg.tool.tokyo/)：Convert Google Fonts to SVG vector paths in real-time
 - [Logo Font Collection](https://text-to-svg.tool.tokyo/)：Curated Google Fonts perfect for logo design
 - [Text Font Collection](https://text-to-svg.tool.tokyo/)：Recommended fonts for web and print
+- [Sanskrit Tattoo Design](https://text-to-svg.tool.tokyo/sanskrit-tattoo)：Specialized tools for creating Sanskrit tattoo designs
+- [Animation Support](https://text-to-svg.tool.tokyo/)：Create animated SVG text with advanced effects
+
+## Professional Applications
+- [Web Design](https://text-to-svg.tool.tokyo/)：Create responsive SVG text for modern websites
+- [Logo Design](https://text-to-svg.tool.tokyo/)：Generate scalable vector logos with custom fonts
+- [Laser Cutting](https://text-to-svg.tool.tokyo/)：Export DXF files for CNC and laser cutting machines
+- [Tattoo Design](https://text-to-svg.tool.tokyo/sanskrit-tattoo)：Create precise vector designs for tattoo artists
+- [Print Design](https://text-to-svg.tool.tokyo/)：Generate high-quality vector text for print materials
+- [Sign Making](https://text-to-svg.tool.tokyo/)：Create custom text for signs and displays
+- [Embroidery](https://text-to-svg.tool.tokyo/)：Convert text to embroidery machine compatible formats
+- [3D Printing](https://text-to-svg.tool.tokyo/)：Generate 3D printable text designs
 
 ## Export Options
 - [SVG Code Export](https://text-to-svg.tool.tokyo/)：One-click copy SVG/TSX code
 - [DXF File Download](https://text-to-svg.tool.tokyo/)：Export DXF for laser cutting and CNC
+- [TSX Component](https://text-to-svg.tool.tokyo/)：Generate React components with TypeScript
+- [PNG Preview](https://text-to-svg.tool.tokyo/)：Export raster preview images
 - [External Tools](https://nexus.skin/)：AI Navigation Hub
 
+## Advanced Features
+- [Font Customization](https://text-to-svg.tool.tokyo/)：Adjust size, weight, and style
+- [Path Editing](https://text-to-svg.tool.tokyo/)：Modify vector paths directly
+- [Animation Controls](https://text-to-svg.tool.tokyo/)：Create and customize text animations
+- [Batch Processing](https://text-to-svg.tool.tokyo/)：Convert multiple texts at once
+- [Font Preview](https://text-to-svg.tool.tokyo/)：Real-time preview of font changes
+
 ## Latest Updates
+- [Sanskrit Tattoo Design](https://text-to-svg.tool.tokyo/sanskrit-tattoo)：New specialized tools for tattoo design
+- [Animation Support](https://text-to-svg.tool.tokyo/)：Added advanced animation capabilities
 - [TSX Component Export](https://text-to-svg.tool.tokyo/)：Updated April 2024
-- [DXF Download Optimization](https://text-to-svg.tool.tokyo/)：Updated April 2024 
+- [DXF Download Optimization](https://text-to-svg.tool.tokyo/)：Updated April 2024
+- [Batch Processing](https://text-to-svg.tool.tokyo/)：New feature for multiple conversions
+- [Font Preview Enhancement](https://text-to-svg.tool.tokyo/)：Improved real-time preview 
