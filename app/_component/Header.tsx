@@ -7,6 +7,7 @@ const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Tutorials', href: '/tutorials' },
   { name: 'Examples', href: '/examples' },
+  { name: 'Sanskrit Tattoo', href: '/sanskrit-tattoo' },
   { name: 'About', href: '/about' },
   { name: 'Github', href: 'https://github.com/JiuRanYa/text-to-svg' },
 ]
