@@ -14,7 +14,7 @@ export function InnerPageLayout({ children, title, description, keyword }: Inner
     <div className="container mx-auto px-4 py-10">
       <div className="max-w-3xl mx-auto">
         <Link 
-          href="/" 
+          href="https://text-to-svg.tool.tokyo/" 
           className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-8"
           title={keyword}
         >
