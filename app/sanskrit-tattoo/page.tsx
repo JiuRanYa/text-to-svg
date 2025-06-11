@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Karma Sanskrit Tattoo Design - Convert Sanskrit Text to SVG for Tattoos',
-  description: 'Create beautiful Sanskrit tattoo designs with our SVG converter. Convert Karma and other Sanskrit text to vector graphics perfect for tattoo artwork. High-quality, scalable designs for meaningful body art.',
+  description: 'Create beautiful Sanskrit tattoo designs with our SVG converter. Convert Karma and other Sanskrit text to vector graphics perfect for tattoo artwork.',
   keywords: 'karma sanskrit tattoo, sanskrit text to svg, tattoo design svg, karma tattoo design, sanskrit symbols svg, vector tattoo design, karma meaning tattoo',
 }
 
