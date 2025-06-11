@@ -19,7 +19,7 @@ export function InnerPageLayout({ children, title, description, keyword }: Inner
           title={keyword}
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          {keyword}
+          Back to Homepage and design
         </Link>
         <h1 className="text-4xl font-bold mb-4">{title}</h1>
         <p className="text-lg text-muted-foreground mb-8">{description}</p>
