@@ -16,6 +16,7 @@ import { ScrollArea } from '@/core/ui/scroll-area'
 import { CustomFontUploader } from './_component/CustomFontUploader'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/core/ui/sheet'
 import { Menu } from 'lucide-react'
+import { Header } from './_component/Header'
 
 type FillRule = 'nonzero' | 'evenodd';
 
@@ -587,9 +588,11 @@ export default function Home() {
       </aside>
 
       {/* 右侧预览区 */}
-      <main className="flex-1 flex flex-col items-center justify-start p-4 lg:p-8 gap-4 lg:gap-8">
+      <main className="flex-1 flex flex-col items-center justify-start gap-4 lg:gap-8">
+
+        <Header />
         {/* 标题行：SVG预览 和 SVG代码 */}
-        <div className="w-full max-w-5xl">
+        <div className="w-full max-w-5xl p-4">
           <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
             <div className="flex-1">
               <h2 className="text-lg font-bold mb-4">SVG Preview</h2>
