@@ -8,6 +8,7 @@ const navigation = [
   { name: 'Tutorials', href: '/tutorials' },
   { name: 'Examples', href: '/examples' },
   { name: 'About', href: '/about' },
+  { name: 'Github', href: 'https://github.com/JiuRanYa/text-to-svg' },
 ]
 
 export function Header() {
