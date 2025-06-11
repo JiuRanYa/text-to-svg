@@ -4,7 +4,6 @@ import { InnerPageLayout } from '../_component/InnerPageLayout'
 export const metadata: Metadata = {
   title: 'Text to SVG Examples - Vector Graphics Conversion Showcase',
   description: 'Explore our collection of text to SVG conversion examples. See how to create stunning vector graphics from text with real-world examples and use cases.',
-  keywords: 'text to svg examples, svg conversion showcase, vector graphics examples, text to vector examples',
 }
 
 export default function ExamplesPage() {

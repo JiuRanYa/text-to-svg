@@ -4,7 +4,6 @@ import { InnerPageLayout } from '../_component/InnerPageLayout'
 export const metadata: Metadata = {
   title: 'About Text to SVG Converter - Vector Graphics Tool',
   description: 'Learn about our Text to SVG converter tool, its features, and how it helps designers and developers create vector graphics from text.',
-  keywords: 'text to svg converter, vector graphics tool, svg path generator, text to vector converter',
 }
 
 export default function AboutPage() {

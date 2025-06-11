@@ -5,7 +5,6 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Text to SVG Tutorials - Learn How to Convert Text to Vector Graphics',
   description: 'Step-by-step tutorials on converting text to SVG paths. Learn how to create vector graphics from text with our comprehensive guides.',
-  keywords: 'text to svg tutorial, svg conversion guide, vector graphics tutorial, text to vector conversion',
 }
 
 export default function TutorialsPage() {
