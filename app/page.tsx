@@ -590,101 +590,106 @@ export default function Home() {
       {/* 右侧预览区 */}
       <main className="flex-1 flex flex-col items-center justify-start gap-4 lg:gap-8">
 
-        <Header />
-        {/* 标题行：SVG预览 和 SVG代码 */}
-        <div className="w-full max-w-5xl p-4">
-          <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
-            <div className="flex-1">
-              <h2 className="text-lg font-bold mb-4">SVG Preview</h2>
-              <div className="bg-white border rounded-lg h-60 flex items-center justify-center overflow-auto shadow-sm">
-                {loadingFont ? <span className="text-gray-400">Loading font...</span> : (
-                  svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">Please enter content</span>
-                )}
+        <ScrollArea className="h-screen w-full">
+          <Header />
+          <div className="flex flex-col gap-4 p-4">
+            {/* 标题行：SVG预览 和 SVG代码 */}
+            <div className="w-full max-w-5xl p-4">
+              <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
+                <div className="flex-1">
+                  <h2 className="text-lg font-bold mb-4">SVG Preview</h2>
+                  <div className="bg-white border rounded-lg h-60 flex items-center justify-center overflow-auto shadow-sm">
+                    {loadingFont ? <span className="text-gray-400">Loading font...</span> : (
+                      svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">Please enter content</span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-lg font-bold mb-4">SVG Code</h2>
+                  <Textarea id="svg-code" className="w-full h-60 rounded" readOnly value={svgString} />
+                </div>
               </div>
             </div>
-            <div className="flex-1">
-              <h2 className="text-lg font-bold mb-4">SVG Code</h2>
-              <Textarea id="svg-code" className="w-full h-60 rounded" readOnly value={svgString} />
+            {/* 操作按钮 */}
+            <div className="w-full max-w-5xl flex flex-row gap-2 justify-end">
+              <Button variant="outline" onClick={() => {
+                navigator.clipboard.writeText(svgString)
+                toast.success('SVG code copied to clipboard')
+              }}>
+                Copy Code
+              </Button>
+              <Button onClick={() => {
+                const blob = new Blob([svgString], { type: 'image/svg+xml' })
+                const url = URL.createObjectURL(blob)
+                const a = document.createElement('a')
+                a.href = url
+                a.download = 'text.svg'
+                a.click()
+                URL.revokeObjectURL(url)
+                toast.success('SVG file downloaded successfully')
+              }}>
+                Download SVG
+              </Button>
+              <Button onClick={downloadDxf}>
+                Download DXF
+              </Button>
             </div>
-          </div>
-        </div>
-        {/* 操作按钮 */}
-        <div className="w-full max-w-5xl flex flex-row gap-2 justify-end">
-          <Button variant="outline" onClick={() => {
-            navigator.clipboard.writeText(svgString)
-            toast.success('SVG code copied to clipboard')
-          }}>
-            Copy Code
-          </Button>
-          <Button onClick={() => {
-            const blob = new Blob([svgString], { type: 'image/svg+xml' })
-            const url = URL.createObjectURL(blob)
-            const a = document.createElement('a')
-            a.href = url
-            a.download = 'text.svg'
-            a.click()
-            URL.revokeObjectURL(url)
-            toast.success('SVG file downloaded successfully')
-          }}>
-            Download SVG
-          </Button>
-          <Button onClick={downloadDxf}>
-            Download DXF
-          </Button>
-        </div>
-        {/* 推荐字体区 */}
-        <div className="w-full max-w-5xl mt-6 bg-gray-50 border rounded-lg p-4 shadow-sm">
-          <h3 className="text-base font-semibold mb-3">Recommended Logo Fonts</h3>
-          <div className="flex flex-wrap gap-3 mb-6">
-            {recommendFonts.map(family => (
-              <button
-                key={family}
-                className={'px-4 py-2 rounded-lg border hover:bg-muted transition font-bold text-xs'}
-                style={{ fontFamily: family, background: selectedFont?.family === family ? '#e0e7ff' : undefined }}
-                onClick={() => {
-                  const fontObj = fontList.find(f => f.family === family)
-                  if (fontObj) setSelectedFont(fontObj)
-                }}
-              >
-                {family}
-              </button>
-            ))}
-          </div>
-          <h3 className="text-base font-semibold mb-3">Recommended Text Fonts</h3>
-          <div className="flex flex-wrap gap-3 mb-6">
-            {recommendTextFonts.map(family => (
-              <button
-                key={family}
-                className={'px-4 py-2 rounded-lg border hover:bg-muted transition font-bold text-xs'}
-                style={{ fontFamily: family, background: selectedFont?.family === family ? '#e0e7ff' : undefined }}
-                onClick={() => {
-                  const fontObj = fontList.find(f => f.family === family)
-                  if (fontObj) setSelectedFont(fontObj)
-                }}
-              >
-                {family}
-              </button>
-            ))}
+            {/* 推荐字体区 */}
+            <div className="w-full max-w-5xl mt-6 bg-gray-50 border rounded-lg p-4 shadow-sm">
+              <h3 className="text-base font-semibold mb-3">Recommended Logo Fonts</h3>
+              <div className="flex flex-wrap gap-3 mb-6">
+                {recommendFonts.map(family => (
+                  <button
+                    key={family}
+                    className={'px-4 py-2 rounded-lg border hover:bg-muted transition font-bold text-xs'}
+                    style={{ fontFamily: family, background: selectedFont?.family === family ? '#e0e7ff' : undefined }}
+                    onClick={() => {
+                      const fontObj = fontList.find(f => f.family === family)
+                      if (fontObj) setSelectedFont(fontObj)
+                    }}
+                  >
+                    {family}
+                  </button>
+                ))}
+              </div>
+              <h3 className="text-base font-semibold mb-3">Recommended Text Fonts</h3>
+              <div className="flex flex-wrap gap-3 mb-6">
+                {recommendTextFonts.map(family => (
+                  <button
+                    key={family}
+                    className={'px-4 py-2 rounded-lg border hover:bg-muted transition font-bold text-xs'}
+                    style={{ fontFamily: family, background: selectedFont?.family === family ? '#e0e7ff' : undefined }}
+                    onClick={() => {
+                      const fontObj = fontList.find(f => f.family === family)
+                      if (fontObj) setSelectedFont(fontObj)
+                    }}
+                  >
+                    {family}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex flex-col gap-3 max-w-xs">
+                {/* 其他工具页脚区 */}
+                <h3 className="text-base font-semibold">Other Tools</h3>
+                <div className="flex flex-wrap gap-3">
+                  {recommendTools.map(tool => (
+                    <a
+                      href={tool.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      key={tool.title}
+                      className={'px-4 py-2 rounded-lg border hover:bg-muted transition font-bold text-xs'}
+                    >
+                      {tool.title}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-3 max-w-xs">
-            {/* 其他工具页脚区 */}
-            <h3 className="text-base font-semibold">Other Tools</h3>
-            <div className="flex flex-wrap gap-3">
-              {recommendTools.map(tool => (
-                <a
-                  href={tool.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  key={tool.title}
-                  className={'px-4 py-2 rounded-lg border hover:bg-muted transition font-bold text-xs'}
-                >
-                  {tool.title}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
+        </ScrollArea>
       </main>
     </div>
   )
