@@ -272,3 +272,26 @@ export const fontSources = {
     }
   ]
 }
+
+export const otherFontLinks = [
+  { name: 'omnibus-type.com', url: 'https://omnibus-type.com' },
+  { name: 'fontsource.org', url: 'https://fontsource.org' },
+  { name: 'maxibestof.one', url: 'https://maxibestof.one' },
+  { name: 'cufonfonts.com', url: 'https://cufonfonts.com' },
+  { name: '1001fonts.com', url: 'https://1001fonts.com' },
+  { name: 'fontsquirrel.com', url: 'https://fontsquirrel.com' },
+  { name: 'online-fonts.com', url: 'https://online-fonts.com' },
+  { name: '1001freefonts.com', url: 'https://1001freefonts.com' },
+  { name: 'fontesk.com', url: 'https://fontesk.com' },
+  { name: 'npmjs.com', url: 'https://npmjs.com' },
+  { name: 'fontmeme.com', url: 'https://fontmeme.com' },
+  { name: 'font.download', url: 'https://font.download' },
+  { name: 'figma.com', url: 'https://figma.com' },
+  { name: 'bunny.net', url: 'https://bunny.net' },
+  { name: 'typewolf.com', url: 'https://typewolf.com' },
+  { name: 'github.com', url: 'https://github.com' },
+  { name: 'adobe.com', url: 'https://adobe.com' },
+  { name: 'google.com', url: 'https://google.com' },
+  { name: 'dafontfree.io', url: 'https://dafontfree.io' },
+  { name: 'befonts.com', url: 'https://befonts.com' }
+]

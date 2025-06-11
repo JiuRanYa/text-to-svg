@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { InnerPageLayout } from '../_component/InnerPageLayout'
 import Link from 'next/link'
-import { fontSources } from './data'
+import { fontSources, otherFontLinks } from './data'
 
 export const metadata: Metadata = {
   title: 'Font Sources - Free and Premium Font Resources',
@@ -110,7 +110,7 @@ export default function SourcesPage() {
           </div>
         </section>
 
-        <section className="mb-12">
+        <section className="rounded-lg border p-6">
           <h2 className="text-2xl font-semibold mb-4">Font Design Tools</h2>
           <div className="grid gap-6 md:grid-cols-2">
             {fontSources.tools.map((source) => (
@@ -130,6 +130,15 @@ export default function SourcesPage() {
                   Visit {source.name} →
                 </Link>
               </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-lg border p-6">
+          <h2 className="text-2xl font-semibold mb-4">Other Font Resources</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {otherFontLinks.map(link => (
+              <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.name}</a>
             ))}
           </div>
         </section>
