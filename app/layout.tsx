@@ -14,9 +14,16 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-export async function generateMetadata({ params }: { params: { slug?: string } }): Promise<Metadata> {
+type LayoutProps = {
+  params: Promise<{
+    slug?: string
+  }>
+}
+
+export async function generateMetadata({ params }: LayoutProps): Promise<Metadata> {
+  const resolvedParams = await params
   const baseUrl = 'https://text-to-svg.tool.tokyo'
-  const path = params.slug ? `/${params.slug}` : ''
+  const path = resolvedParams.slug ? `/${resolvedParams.slug}` : ''
   
   // 始终生成 canonical URL，包括主路由
   const canonicalUrl = `${baseUrl}${path}`
