@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import { Toaster } from '@/core/ui/sonner'
+import { CanonicalLink } from './_components/CanonicalLink'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -89,7 +90,7 @@ export default function RootLayout({
             gtag('config', 'G-YV1S58F05V');
           `}
         </Script>
-        <link rel="canonical" href="https://text-to-svg.tool.tokyo/"></link>
+        <CanonicalLink />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

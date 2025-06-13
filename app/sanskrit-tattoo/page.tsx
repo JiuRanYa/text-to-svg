@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { InnerPageLayout } from '../_component/InnerPageLayout'
+import { InnerPageLayout } from '../_components/InnerPageLayout'
 import Link from 'next/link'
 
 export const metadata: Metadata = {

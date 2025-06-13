@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { InnerPageLayout } from '../_component/InnerPageLayout'
+import { InnerPageLayout } from '../_components/InnerPageLayout'
 
 export const metadata: Metadata = {
   title: 'Text to SVG Examples - Vector Graphics Conversion Showcase',

@@ -4,7 +4,7 @@ import { Input } from '@/core/ui/input'
 import { Button } from '@/core/ui/button'
 import { Textarea } from '@/core/ui/textarea'
 import { Label } from '@/core/ui/label'
-import { GoogleFontSelector, GoogleFontItem } from './_component/GoogleFontSelector'
+import { GoogleFontSelector, GoogleFontItem } from './_components/GoogleFontSelector'
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import opentype from 'opentype.js'
 import makerjs from 'makerjs'
@@ -13,10 +13,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import debounce from 'lodash/debounce'
 import { toast } from 'sonner'
 import { ScrollArea } from '@/core/ui/scroll-area'
-import { CustomFontUploader } from './_component/CustomFontUploader'
+import { CustomFontUploader } from './_components/CustomFontUploader'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/core/ui/sheet'
 import { Menu } from 'lucide-react'
-import { Header } from './_component/Header'
+import { Header } from './_components/Header'
 
 type FillRule = 'nonzero' | 'evenodd';
 
