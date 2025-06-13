@@ -18,6 +18,9 @@ export async function generateMetadata({ params }: { params: { slug?: string } }
   const baseUrl = 'https://text-to-svg.tool.tokyo'
   const path = params.slug ? `/${params.slug}` : ''
   
+  // 始终生成 canonical URL，包括主路由
+  const canonicalUrl = `${baseUrl}${path}`
+  
   return {
     title: 'Google Font to SVG Path Converter | Online Font Vector Generator',
     description: 'Convert Google Fonts to SVG paths with customizable styles, stroke effects, and fill options. Perfect for web design, logo creation, and vector graphics.',
@@ -28,7 +31,7 @@ export async function generateMetadata({ params }: { params: { slug?: string } }
       }
     },
     alternates: {
-      canonical: path ? `${baseUrl}${path}` : undefined
+      canonical: canonicalUrl
     },
     icons: {
       icon: [
@@ -63,7 +66,7 @@ export async function generateMetadata({ params }: { params: { slug?: string } }
     openGraph: {
       title: 'Google Font to SVG Path Converter',
       description: 'Convert Google Fonts to SVG paths with customizable styles, stroke effects, and fill options. Perfect for web design, logo creation, laser cutting, and vector graphics. Free online tool with instant preview.',
-      url: `${baseUrl}${path}`,
+      url: canonicalUrl,
       siteName: 'Google Font to SVG Path',
       locale: 'en_US',
       type: 'website'
