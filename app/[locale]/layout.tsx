@@ -7,6 +7,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { routing } from '@/core/i18n/routing'
 import { notFound } from 'next/navigation'
 import { languages } from '@/core/i18n/config'
+import { getTranslations } from 'next-intl/server'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,6 +26,7 @@ interface RootLayoutProps {
 
 export async function generateMetadata({ params }: RootLayoutProps): Promise<Metadata> {
   const resolvedParams = await params
+  const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'metadata' })
   const baseUrl = 'https://text-to-svg.tool.tokyo'
   const path = resolvedParams.locale ? `/${resolvedParams.locale}` : ''
   
@@ -38,8 +40,8 @@ export async function generateMetadata({ params }: RootLayoutProps): Promise<Met
   }, {} as Record<string, string>)
   
   return {
-    title: 'Google Font to SVG Path Converter | Online Font Vector Generator',
-    description: 'Convert Google Fonts to SVG paths with customizable styles, stroke effects, and fill options. Perfect for web design, logo creation, and vector graphics.',
+    title: t('title'),
+    description: t('description'),
     verification: {
       google: '5GH1kG7yjme4OwP09VID_uU9sDBuXFo3H3D9NXrWWa8',
       other: {
@@ -81,17 +83,17 @@ export async function generateMetadata({ params }: RootLayoutProps): Promise<Met
     authors: [{ name: 'Jiuran' }],
     creator: 'Jiuran',
     openGraph: {
-      title: 'Google Font to SVG Path Converter',
-      description: 'Convert Google Fonts to SVG paths with customizable styles, stroke effects, and fill options. Perfect for web design, logo creation, laser cutting, and vector graphics. Free online tool with instant preview.',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
       url: canonicalUrl,
-      siteName: 'Google Font to SVG Path',
+      siteName: t('ogTitle'),
       locale: languages[resolvedParams.locale].ogLocale,
       type: 'website'
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Google Font to SVG Path Converter',
-      description: 'Convert Google Fonts to SVG paths with customizable styles, stroke effects, and fill options. Perfect for web design, logo creation, laser cutting, and vector graphics. Free online tool with instant preview.'
+      title: t('twitterTitle'),
+      description: t('twitterDescription')
     }
   }
 }

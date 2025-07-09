@@ -65,5 +65,13 @@
     "svgDownloaded": "SVG file downloaded successfully",
     "dxfDownloaded": "DXF file downloaded successfully",
     "customFontActive": "Custom font is active. Clear it first to use Google Fonts."
+  },
+  "metadata": {
+    "title": "Google Font to SVG Path Converter | Online Font Vector Generator",
+    "description": "Convert Google Fonts to SVG paths with customizable styles, stroke effects, and fill options. Perfect for web design, logo creation, and vector graphics.",
+    "ogTitle": "Google Font to SVG Path Converter",
+    "ogDescription": "Convert Google Fonts to SVG paths with customizable styles, stroke effects, and fill options. Perfect for web design, logo creation, laser cutting, and vector graphics. Free online tool with instant preview.",
+    "twitterTitle": "Google Font to SVG Path Converter",
+    "twitterDescription": "Convert Google Fonts to SVG paths with customizable styles, stroke effects, and fill options. Perfect for web design, logo creation, laser cutting, and vector graphics. Free online tool with instant preview."
   }
 }
