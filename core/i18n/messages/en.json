@@ -1,5 +1,12 @@
 {
   "title": "Text to SVG",
+  "nav": {
+    "home": "Home",
+    "tutorials": "Tutorials",
+    "examples": "Examples",
+    "fontSources": "Font Sources",
+    "sanskritTattoo": "Sanskrit Tattoo"
+  },
   "settings": {
     "title": "Settings",
     "customFont": "Custom Font",

@@ -1,21 +1,23 @@
 'use client'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname } from '@/core/i18n/navigation'
 import { cn } from '@/core/lib/utils'
-import { LanguageSwitch } from './language-switch'
 import { Icons } from '@/core/ui/icons'
 import { Button } from '@/core/ui/button'
+import { Link } from '@/core/i18n/navigation'
+import { useTranslations } from 'next-intl'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Tutorials', href: '/tutorials' },
-  { name: 'Examples', href: '/examples' },
-  { name: 'Font Sources', href: '/sources' },
-  { name: 'Sanskrit Tattoo', href: '/sanskrit-tattoo' },
+  { name: 'nav.home', href: '/' },
+  { name: 'nav.tutorials', href: '/tutorials' },
+  { name: 'nav.examples', href: '/examples' },
+  { name: 'nav.fontSources', href: '/sources' },
+  { name: 'nav.sanskritTattoo', href: '/sanskrit-tattoo' },
 ]
 
 export function Header() {
   const pathname = usePathname()
+  const t = useTranslations()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -40,21 +42,31 @@ export function Header() {
                       : 'text-foreground/60'
                   )}
                 >
-                  {item.name}
+                  {t(item.name)}
                 </Link>
               ))}
             </nav>
             <div className="flex items-center space-x-2 border-l pl-6">
-              <LanguageSwitch />
-              <Button variant="ghost" size="icon">
-                <Link target="_blank" href="https://github.com/JiuRanYa/text-to-svg">
+              <LanguageSwitcher />
+              <Button variant="ghost" size="icon" asChild>
+                <a
+                  href="https://github.com/JiuRanYa/text-to-svg"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <Icons.github />
-                </Link>
+                  <span className="sr-only">GitHub</span>
+                </a>
               </Button>
-              <Button variant="ghost" size="icon">
-                <Link target="_blank" href="https://x.com/JiuRanYa_">
+              <Button variant="ghost" size="icon" asChild>
+                <a
+                  href="https://x.com/JiuRanYa_"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <Icons.twitter />
-                </Link>
+                  <span className="sr-only">Twitter</span>
+                </a>
               </Button>
             </div>
           </div>

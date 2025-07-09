@@ -1,5 +1,12 @@
 {
   "title": "文字转 SVG",
+  "nav": {
+    "home": "首页",
+    "tutorials": "教程",
+    "examples": "示例",
+    "fontSources": "字体来源",
+    "sanskritTattoo": "梵文纹身"
+  },
   "settings": {
     "title": "设置",
     "customFont": "自定义字体",
