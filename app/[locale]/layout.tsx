@@ -105,7 +105,7 @@ export default async function RootLayout({
     notFound()
   }
   return (
-    <html lang="en">
+    <html lang={locale}>
       <head>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-YV1S58F05V"
