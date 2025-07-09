@@ -1,8 +1,62 @@
 {
-  "Index": {
-    "title": "Beautifully designed components built with Radix UI and Tailwind CSS.",
-    "description": "Accessible and customizable components that you can copy and paste into your apps. Free. Open Source. And Next.js 13 Ready.",
-    "documentation": "Documentation",
-    "github": "GitHub"
+  "title": "Text to SVG",
+  "settings": {
+    "title": "Settings",
+    "customFont": "Custom Font",
+    "customFontOptional": "(optional)",
+    "fontVariant": "Font Variant",
+    "text": "Text",
+    "textPlaceholder": "Enter text to convert",
+    "fontSize": "Font Size",
+    "mergePaths": "Merge Paths",
+    "fill": "Fill",
+    "kerning": "Kerning",
+    "separatePaths": "Separate Paths",
+    "bezierAccuracy": "Bezier Curve Accuracy",
+    "fillRule": "Fill Rule",
+    "strokeColor": "Stroke Color",
+    "strokeWidth": "Stroke Width",
+    "fillColor": "Fill Color",
+    "dxfUnits": "DXF Units"
+  },
+  "animation": {
+    "title": "Animation Settings",
+    "enable": "Enable Animation",
+    "type": "Animation Type",
+    "speed": "Animation Speed",
+    "pause": "Pause Animation",
+    "types": {
+      "signature": "Signature Draw",
+      "draw": "Simple Draw",
+      "fadeIn": "Fade In",
+      "pulse": "Pulse"
+    },
+    "speeds": {
+      "slow": "Slow",
+      "normal": "Normal",
+      "fast": "Fast"
+    }
+  },
+  "preview": {
+    "title": "SVG Preview",
+    "loading": "Loading font...",
+    "empty": "Please enter content",
+    "code": "SVG Code"
+  },
+  "actions": {
+    "copyCode": "Copy Code",
+    "downloadSvg": "Download SVG",
+    "downloadDxf": "Download DXF"
+  },
+  "recommendations": {
+    "logoFonts": "Recommended Logo Fonts",
+    "textFonts": "Recommended Text Fonts",
+    "otherTools": "Other Tools"
+  },
+  "notifications": {
+    "copied": "SVG code copied to clipboard",
+    "svgDownloaded": "SVG file downloaded successfully",
+    "dxfDownloaded": "DXF file downloaded successfully",
+    "customFontActive": "Custom font is active. Clear it first to use Google Fonts."
   }
 }

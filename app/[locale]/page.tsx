@@ -18,10 +18,12 @@ import { CustomFontUploader } from './_components/CustomFontUploader'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/core/ui/sheet'
 import { Menu } from 'lucide-react'
 import { Header } from './_components/Header'
+import { useTranslations } from 'next-intl'
 
 type FillRule = 'nonzero' | 'evenodd';
 
 export default function Home() {
+  const t = useTranslations()
   const [selectedFont, setSelectedFont] = useState<GoogleFontItem | null>({
     family: 'Mea Culpa',
     variants: ['regular'],
@@ -321,7 +323,7 @@ export default function Home() {
     a.download = `${text}.dxf`
     a.click()
     URL.revokeObjectURL(url)
-    toast.success('DXF file downloaded successfully')
+    toast.success(t('notifications.dxfDownloaded'))
   }
 
   // 当 selectedFont 变化时，自动切换到 regular 变体
@@ -354,10 +356,10 @@ export default function Home() {
 
   const renderAnimationSettings = () => (
     <div className="border-t pt-4 mt-4 flex flex-col gap-6">
-      <h3 className="text-sm font-semibold">Animation Settings</h3>
+      <h3 className="text-sm font-semibold">{t('animation.title')}</h3>
       
       <div className="flex items-center justify-between">
-        <Label htmlFor="animation-enabled">Enable Animation</Label>
+        <Label htmlFor="animation-enabled">{t('animation.enable')}</Label>
         <Switch 
           id="animation-enabled" 
           checked={animationEnabled} 
@@ -368,36 +370,36 @@ export default function Home() {
       {animationEnabled && (
         <>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="animation-type">Animation Type</Label>
+            <Label htmlFor="animation-type">{t('animation.type')}</Label>
             <Select value={animationType} onValueChange={setAnimationType}>
               <SelectTrigger>
                 <SelectValue placeholder="Select animation type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="signature">Signature Draw</SelectItem>
-                <SelectItem value="draw">Simple Draw</SelectItem>
-                <SelectItem value="fade-in">Fade In</SelectItem>
-                <SelectItem value="pulse">Pulse</SelectItem>
+                <SelectItem value="signature">{t('animation.types.signature')}</SelectItem>
+                <SelectItem value="draw">{t('animation.types.draw')}</SelectItem>
+                <SelectItem value="fade-in">{t('animation.types.fadeIn')}</SelectItem>
+                <SelectItem value="pulse">{t('animation.types.pulse')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="animation-speed">Animation Speed</Label>
+            <Label htmlFor="animation-speed">{t('animation.speed')}</Label>
             <Select value={animationSpeed} onValueChange={setAnimationSpeed}>
               <SelectTrigger>
                 <SelectValue placeholder="Select speed" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="slow">Slow</SelectItem>
-                <SelectItem value="normal">Normal</SelectItem>
-                <SelectItem value="fast">Fast</SelectItem>
+                <SelectItem value="slow">{t('animation.speeds.slow')}</SelectItem>
+                <SelectItem value="normal">{t('animation.speeds.normal')}</SelectItem>
+                <SelectItem value="fast">{t('animation.speeds.fast')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="flex items-center justify-between">
-            <Label htmlFor="animation-paused">Pause Animation</Label>
+            <Label htmlFor="animation-paused">{t('animation.pause')}</Label>
             <Switch 
               id="animation-paused" 
               checked={animationPaused} 
@@ -412,13 +414,12 @@ export default function Home() {
   const renderSettings = () => (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2 mb-4">
-        <Image src="/favicon-32x32.png" alt="Text to svg" width={24} height={24} className="rounded-full" />
-
+        <Image src="/favicon-32x32.png" alt={t('title')} width={24} height={24} className="rounded-full" />
         <h1 className="text-xl font-bold">
-          Text to svg
+          {t('title')}
         </h1>
       </div>
-      <h2 className="text-lg font-bold mb-2">Settings</h2>
+      <h2 className="text-lg font-bold mb-2">{t('settings.title')}</h2>
       {/* 配置面板内容 */}
       <div className="mb-4">
         <GoogleFontSelector 
@@ -427,7 +428,7 @@ export default function Home() {
             if (!customFont) {
               setSelectedFont(font)
             } else {
-              toast.info('Custom font is active. Clear it first to use Google Fonts.')
+              toast.info(t('notifications.customFontActive'))
             }
           }}
           fontList={fontList}
@@ -440,8 +441,8 @@ export default function Home() {
       {/* 自定义字体上传组件 */}
       <div className="mb-4">
         <Label className="mb-2 block">
-          Custom Font
-          <span className="text-xs text-gray-500 ms-2">(optional)</span>
+          {t('settings.customFont')}
+          <span className="text-xs text-gray-500 ms-2">{t('settings.customFontOptional')}</span>
         </Label>
         <CustomFontUploader 
           onFontLoaded={handleCustomFontLoaded}
@@ -453,7 +454,7 @@ export default function Home() {
       {/* 字体变体选择器 */}
       {selectedFont && !customFont && (
         <div className="flex flex-col gap-2">
-          <Label>Font Variant</Label>
+          <Label>{t('settings.fontVariant')}</Label>
           <Select value={selectedVariant} onValueChange={setSelectedVariant}>
             <SelectTrigger>
               <SelectValue placeholder="Select font variant" />
@@ -470,39 +471,39 @@ export default function Home() {
       )}
       
       <div className="flex flex-col gap-2">
-        <Label htmlFor="text">Text</Label>
-        <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder="Enter text to convert" />
+        <Label htmlFor="text">{t('settings.text')}</Label>
+        <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder={t('settings.textPlaceholder')} />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="size">Font Size</Label>
+        <Label htmlFor="size">{t('settings.fontSize')}</Label>
         <Input id="size" type="number" value={fontSize} onChange={e => setFontSize(Number(e.target.value))} />
       </div>
 
       <div className="flex flex-col gap-6 my-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="union">Merge Paths</Label>
+          <Label htmlFor="union">{t('settings.mergePaths')}</Label>
           <Switch id="union" checked={union} onCheckedChange={setUnion} />
         </div>
 
         <div className="flex items-center justify-between">
-          <Label htmlFor="filled">Fill</Label>
+          <Label htmlFor="filled">{t('settings.fill')}</Label>
           <Switch id="filled" checked={filled} onCheckedChange={setFilled} />
         </div>
 
         <div className="flex items-center justify-between">
-          <Label htmlFor="kerning">Kerning</Label>
+          <Label htmlFor="kerning">{t('settings.kerning')}</Label>
           <Switch id="kerning" checked={kerning} onCheckedChange={setKerning} />
         </div>
 
         <div className="flex items-center justify-between">
-          <Label htmlFor="separate">Separate Paths</Label>
+          <Label htmlFor="separate">{t('settings.separatePaths')}</Label>
           <Switch id="separate" checked={separate} onCheckedChange={setSeparate} />
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="bezier-accuracy">Bezier Curve Accuracy</Label>
+        <Label htmlFor="bezier-accuracy">{t('settings.bezierAccuracy')}</Label>
         <Input 
           id="bezier-accuracy" 
           type="number" 
@@ -515,7 +516,7 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="fill-rule">Fill Rule</Label>
+        <Label htmlFor="fill-rule">{t('settings.fillRule')}</Label>
         <Select value={fillRule} onValueChange={(value: FillRule) => setFillRule(value)}>
           <SelectTrigger>
             <SelectValue placeholder="Select fill rule" />
@@ -528,22 +529,22 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="stroke">Stroke Color</Label>
+        <Label htmlFor="stroke">{t('settings.strokeColor')}</Label>
         <Input id="stroke" type="color" value={stroke} onChange={e => setStroke(e.target.value)} />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="stroke-width">Stroke Width</Label>
+        <Label htmlFor="stroke-width">{t('settings.strokeWidth')}</Label>
         <Input id="stroke-width" type="text" value={strokeWidth} onChange={e => setStrokeWidth(e.target.value)} />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="fill">Fill Color</Label>
+        <Label htmlFor="fill">{t('settings.fillColor')}</Label>
         <Input id="fill" type="color" value={fill} onChange={e => setFill(e.target.value)} />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="dxf-units">DXF Units</Label>
+        <Label htmlFor="dxf-units">{t('settings.dxfUnits')}</Label>
         <Select value={dxfUnits} onValueChange={setDxfUnits}>
           <SelectTrigger>
             <SelectValue placeholder="Select unit" />
@@ -573,11 +574,9 @@ export default function Home() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-full sm:max-w-sm p-0">
-
             <ScrollArea className="h-full p-6">
-
               <SheetHeader className="mb-6 p-0">
-                <SheetTitle>Change Your Settings</SheetTitle>
+                <SheetTitle>{t('settings.title')}</SheetTitle>
                 <SheetDescription>
                   Customize your text to SVG conversion settings here.
                 </SheetDescription>
@@ -597,7 +596,6 @@ export default function Home() {
 
       {/* 右侧预览区 */}
       <main className="flex-1 flex flex-col items-center justify-start gap-4 lg:gap-8">
-
         <ScrollArea className="h-screen w-full">
           <Header />
           <div className="flex flex-col gap-4 p-4">
@@ -605,15 +603,15 @@ export default function Home() {
             <div className="w-full max-w-5xl p-4">
               <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
                 <div className="flex-1">
-                  <h2 className="text-lg font-bold mb-4">SVG Preview</h2>
+                  <h2 className="text-lg font-bold mb-4">{t('preview.title')}</h2>
                   <div className="bg-white border rounded-lg h-60 flex items-center justify-center overflow-auto shadow-sm">
-                    {loadingFont ? <span className="text-gray-400">Loading font...</span> : (
-                      svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">Please enter content</span>
+                    {loadingFont ? <span className="text-gray-400">{t('preview.loading')}</span> : (
+                      svgString ? <div dangerouslySetInnerHTML={{ __html: svgString }} /> : <span className="text-gray-400">{t('preview.empty')}</span>
                     )}
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-lg font-bold mb-4">SVG Code</h2>
+                  <h2 className="text-lg font-bold mb-4">{t('preview.code')}</h2>
                   <Textarea id="svg-code" className="w-full h-60 rounded" readOnly value={svgString} />
                 </div>
               </div>
@@ -622,9 +620,9 @@ export default function Home() {
             <div className="w-full max-w-5xl flex flex-row gap-2 justify-end">
               <Button variant="outline" onClick={() => {
                 navigator.clipboard.writeText(svgString)
-                toast.success('SVG code copied to clipboard')
+                toast.success(t('notifications.copied'))
               }}>
-                Copy Code
+                {t('actions.copyCode')}
               </Button>
               <Button onClick={() => {
                 const blob = new Blob([svgString], { type: 'image/svg+xml' })
@@ -634,17 +632,17 @@ export default function Home() {
                 a.download = 'text.svg'
                 a.click()
                 URL.revokeObjectURL(url)
-                toast.success('SVG file downloaded successfully')
+                toast.success(t('notifications.svgDownloaded'))
               }}>
-                Download SVG
+                {t('actions.downloadSvg')}
               </Button>
               <Button onClick={downloadDxf}>
-                Download DXF
+                {t('actions.downloadDxf')}
               </Button>
             </div>
             {/* 推荐字体区 */}
             <div className="w-full max-w-5xl mt-6 bg-gray-50 border rounded-lg p-4 shadow-sm">
-              <h3 className="text-base font-semibold mb-3">Recommended Logo Fonts</h3>
+              <h3 className="text-base font-semibold mb-3">{t('recommendations.logoFonts')}</h3>
               <div className="flex flex-wrap gap-3 mb-6">
                 {recommendFonts.map(family => (
                   <button
@@ -660,7 +658,7 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-              <h3 className="text-base font-semibold mb-3">Recommended Text Fonts</h3>
+              <h3 className="text-base font-semibold mb-3">{t('recommendations.textFonts')}</h3>
               <div className="flex flex-wrap gap-3 mb-6">
                 {recommendTextFonts.map(family => (
                   <button
@@ -679,7 +677,7 @@ export default function Home() {
 
               <div className="flex flex-col gap-3 max-w-xs">
                 {/* 其他工具页脚区 */}
-                <h3 className="text-base font-semibold">Other Tools</h3>
+                <h3 className="text-base font-semibold">{t('recommendations.otherTools')}</h3>
                 <div className="flex flex-wrap gap-3">
                   {recommendTools.map(tool => (
                     <a
@@ -696,7 +694,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
         </ScrollArea>
       </main>
     </div>

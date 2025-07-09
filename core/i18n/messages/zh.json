@@ -1,8 +1,62 @@
 {
-  "Index": {
-    "title": "漂亮的设计组件",
-    "description": "可访问和可定制的组件，您可以复制和粘贴到您的应用程序中。免费。开源。和 Next.js 13 准备好了。",
-    "documentation": "文档",
-    "github": "GitHub"
+  "title": "文字转 SVG",
+  "settings": {
+    "title": "设置",
+    "customFont": "自定义字体",
+    "customFontOptional": "(可选)",
+    "fontVariant": "字体变体",
+    "text": "文本",
+    "textPlaceholder": "输入要转换的文本",
+    "fontSize": "字体大小",
+    "mergePaths": "合并路径",
+    "fill": "填充",
+    "kerning": "字距调整",
+    "separatePaths": "分离路径",
+    "bezierAccuracy": "贝塞尔曲线精度",
+    "fillRule": "填充规则",
+    "strokeColor": "描边颜色",
+    "strokeWidth": "描边宽度",
+    "fillColor": "填充颜色",
+    "dxfUnits": "DXF 单位"
+  },
+  "animation": {
+    "title": "动画设置",
+    "enable": "启用动画",
+    "type": "动画类型",
+    "speed": "动画速度",
+    "pause": "暂停动画",
+    "types": {
+      "signature": "签名绘制",
+      "draw": "简单绘制",
+      "fadeIn": "淡入",
+      "pulse": "脉冲"
+    },
+    "speeds": {
+      "slow": "慢速",
+      "normal": "正常",
+      "fast": "快速"
+    }
+  },
+  "preview": {
+    "title": "SVG 预览",
+    "loading": "正在加载字体...",
+    "empty": "请输入内容",
+    "code": "SVG 代码"
+  },
+  "actions": {
+    "copyCode": "复制代码",
+    "downloadSvg": "下载 SVG",
+    "downloadDxf": "下载 DXF"
+  },
+  "recommendations": {
+    "logoFonts": "推荐 Logo 字体",
+    "textFonts": "推荐文本字体",
+    "otherTools": "其他工具"
+  },
+  "notifications": {
+    "copied": "SVG 代码已复制到剪贴板",
+    "svgDownloaded": "SVG 文件下载成功",
+    "dxfDownloaded": "DXF 文件下载成功",
+    "customFontActive": "自定义字体已激活。要使用 Google 字体，请先清除自定义字体。"
   }
 }
