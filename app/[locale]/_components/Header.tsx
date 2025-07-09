@@ -5,7 +5,7 @@ import { Icons } from '@/core/ui/icons'
 import { Button } from '@/core/ui/button'
 import { Link } from '@/core/i18n/navigation'
 import { useTranslations } from 'next-intl'
-import LanguageSwitch from './language-switch'
+import LanguageSwitcher from './LanguageSwitcher'
 
 const navigation = [
   { name: 'nav.home', href: '/' },
@@ -47,7 +47,7 @@ export function Header() {
               ))}
             </nav>
             <div className="flex items-center space-x-2 border-l pl-6">
-              <LanguageSwitch />
+              <LanguageSwitcher />
               <Button variant="ghost" size="icon" asChild>
                 <a
                   href="https://github.com/JiuRanYa/text-to-svg"

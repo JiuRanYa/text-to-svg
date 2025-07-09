@@ -1,0 +1,69 @@
+{
+  "title": "Texte en SVG",
+  "nav": {
+    "home": "Accueil",
+    "tutorials": "Tutoriels",
+    "examples": "Exemples",
+    "fontSources": "Sources de polices",
+    "sanskritTattoo": "Tatouage Sanskrit"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "customFont": "Police personnalisée",
+    "customFontOptional": "(optionnel)",
+    "fontVariant": "Variante de police",
+    "text": "Texte",
+    "textPlaceholder": "Entrez le texte à convertir",
+    "fontSize": "Taille de police",
+    "mergePaths": "Fusionner les chemins",
+    "fill": "Remplissage",
+    "kerning": "Crénage",
+    "separatePaths": "Séparer les chemins",
+    "bezierAccuracy": "Précision des courbes de Bézier",
+    "fillRule": "Règle de remplissage",
+    "strokeColor": "Couleur du contour",
+    "strokeWidth": "Épaisseur du contour",
+    "fillColor": "Couleur de remplissage",
+    "dxfUnits": "Unités DXF"
+  },
+  "animation": {
+    "title": "Paramètres d'animation",
+    "enable": "Activer l'animation",
+    "type": "Type d'animation",
+    "speed": "Vitesse d'animation",
+    "pause": "Mettre en pause",
+    "types": {
+      "signature": "Signature",
+      "draw": "Dessin simple",
+      "fadeIn": "Fondu",
+      "pulse": "Pulsation"
+    },
+    "speeds": {
+      "slow": "Lente",
+      "normal": "Normale",
+      "fast": "Rapide"
+    }
+  },
+  "preview": {
+    "title": "Aperçu SVG",
+    "loading": "Chargement de la police...",
+    "empty": "Veuillez entrer du contenu",
+    "code": "Code SVG"
+  },
+  "actions": {
+    "copyCode": "Copier le code",
+    "downloadSvg": "Télécharger SVG",
+    "downloadDxf": "Télécharger DXF"
+  },
+  "recommendations": {
+    "logoFonts": "Polices recommandées pour logos",
+    "textFonts": "Polices recommandées pour texte",
+    "otherTools": "Autres outils"
+  },
+  "notifications": {
+    "copied": "Code SVG copié dans le presse-papiers",
+    "svgDownloaded": "Fichier SVG téléchargé avec succès",
+    "dxfDownloaded": "Fichier DXF téléchargé avec succès",
+    "customFontActive": "Police personnalisée active. Effacez-la d'abord pour utiliser les polices Google."
+  }
+} 
