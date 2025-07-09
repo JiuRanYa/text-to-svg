@@ -31,7 +31,7 @@ export function GoogleFontSelector({ value, onChange, fontList, isLoading, searc
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <Label htmlFor="google-font">
-          Google Font
+          <h3> Google Font </h3>
         </Label>
         <span className="text-xs text-gray-500">
           (View all on {' '}

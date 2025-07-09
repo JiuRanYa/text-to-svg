@@ -359,7 +359,9 @@ export default function Home() {
       <h3 className="text-sm font-semibold">{t('animation.title')}</h3>
       
       <div className="flex items-center justify-between">
-        <Label htmlFor="animation-enabled">{t('animation.enable')}</Label>
+        <Label htmlFor="animation-enabled">
+          <h3>{t('animation.enable')}</h3>
+        </Label>
         <Switch 
           id="animation-enabled" 
           checked={animationEnabled} 
@@ -370,7 +372,9 @@ export default function Home() {
       {animationEnabled && (
         <>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="animation-type">{t('animation.type')}</Label>
+            <Label htmlFor="animation-type">
+              <h3>{t('animation.type')}</h3>
+            </Label>
             <Select value={animationType} onValueChange={setAnimationType}>
               <SelectTrigger>
                 <SelectValue placeholder="Select animation type" />
@@ -385,7 +389,9 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="animation-speed">{t('animation.speed')}</Label>
+            <Label htmlFor="animation-speed">
+              <h3>{t('animation.speed')}</h3>
+            </Label>
             <Select value={animationSpeed} onValueChange={setAnimationSpeed}>
               <SelectTrigger>
                 <SelectValue placeholder="Select speed" />
@@ -399,7 +405,9 @@ export default function Home() {
           </div>
 
           <div className="flex items-center justify-between">
-            <Label htmlFor="animation-paused">{t('animation.pause')}</Label>
+            <Label htmlFor="animation-paused">
+              <h3>{t('animation.pause')}</h3>
+            </Label>
             <Switch 
               id="animation-paused" 
               checked={animationPaused} 
@@ -441,8 +449,10 @@ export default function Home() {
       {/* 自定义字体上传组件 */}
       <div className="mb-4">
         <Label className="mb-2 block">
-          {t('settings.customFont')}
-          <span className="text-xs text-gray-500 ms-2">{t('settings.customFontOptional')}</span>
+          <h3>
+            {t('settings.customFont')}
+            <span className="text-xs text-gray-500 ms-2">{t('settings.customFontOptional')}</span>
+          </h3>
         </Label>
         <CustomFontUploader 
           onFontLoaded={handleCustomFontLoaded}
@@ -471,39 +481,53 @@ export default function Home() {
       )}
       
       <div className="flex flex-col gap-2">
-        <Label htmlFor="text">{t('settings.text')}</Label>
+        <Label htmlFor="text">
+          <h3>{t('settings.text')}</h3>
+        </Label>
         <Input id="text" value={text} onChange={e => setText(e.target.value)} placeholder={t('settings.textPlaceholder')} />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="size">{t('settings.fontSize')}</Label>
+        <Label htmlFor="size">
+          <h3>{t('settings.fontSize')}</h3>
+        </Label>
         <Input id="size" type="number" value={fontSize} onChange={e => setFontSize(Number(e.target.value))} />
       </div>
 
       <div className="flex flex-col gap-6 my-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="union">{t('settings.mergePaths')}</Label>
+          <Label htmlFor="union">
+            <h3>{t('settings.mergePaths')}</h3>
+          </Label>
           <Switch id="union" checked={union} onCheckedChange={setUnion} />
         </div>
 
         <div className="flex items-center justify-between">
-          <Label htmlFor="filled">{t('settings.fill')}</Label>
+          <Label htmlFor="filled">
+            <h3>{t('settings.fill')}</h3>
+          </Label>
           <Switch id="filled" checked={filled} onCheckedChange={setFilled} />
         </div>
 
         <div className="flex items-center justify-between">
-          <Label htmlFor="kerning">{t('settings.kerning')}</Label>
+          <Label htmlFor="kerning">
+            <h3>{t('settings.kerning')}</h3>
+          </Label>
           <Switch id="kerning" checked={kerning} onCheckedChange={setKerning} />
         </div>
 
         <div className="flex items-center justify-between">
-          <Label htmlFor="separate">{t('settings.separatePaths')}</Label>
+          <Label htmlFor="separate">
+            <h3>{t('settings.separatePaths')}</h3>
+          </Label>
           <Switch id="separate" checked={separate} onCheckedChange={setSeparate} />
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="bezier-accuracy">{t('settings.bezierAccuracy')}</Label>
+        <Label htmlFor="bezier-accuracy">
+          <h3>{t('settings.bezierAccuracy')}</h3>
+        </Label>
         <Input 
           id="bezier-accuracy" 
           type="number" 
@@ -516,7 +540,9 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="fill-rule">{t('settings.fillRule')}</Label>
+        <Label htmlFor="fill-rule">
+          <h3>{t('settings.fillRule')}</h3>
+        </Label>
         <Select value={fillRule} onValueChange={(value: FillRule) => setFillRule(value)}>
           <SelectTrigger>
             <SelectValue placeholder="Select fill rule" />
@@ -529,22 +555,30 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="stroke">{t('settings.strokeColor')}</Label>
+        <Label htmlFor="stroke">
+          <h3>{t('settings.strokeColor')}</h3>
+        </Label>
         <Input id="stroke" type="color" value={stroke} onChange={e => setStroke(e.target.value)} />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="stroke-width">{t('settings.strokeWidth')}</Label>
+        <Label htmlFor="stroke-width">
+          <h3>{t('settings.strokeWidth')}</h3>
+        </Label>
         <Input id="stroke-width" type="text" value={strokeWidth} onChange={e => setStrokeWidth(e.target.value)} />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="fill">{t('settings.fillColor')}</Label>
+        <Label htmlFor="fill">
+          <h3>{t('settings.fillColor')}</h3>
+        </Label>
         <Input id="fill" type="color" value={fill} onChange={e => setFill(e.target.value)} />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="dxf-units">{t('settings.dxfUnits')}</Label>
+        <Label htmlFor="dxf-units">
+          <h3>{t('settings.dxfUnits')}</h3>
+        </Label>
         <Select value={dxfUnits} onValueChange={setDxfUnits}>
           <SelectTrigger>
             <SelectValue placeholder="Select unit" />
@@ -642,7 +676,7 @@ export default function Home() {
             </div>
             {/* 推荐字体区 */}
             <div className="w-full max-w-5xl mt-6 bg-gray-50 border rounded-lg p-4 shadow-sm">
-              <h3 className="text-base font-semibold mb-3">{t('recommendations.logoFonts')}</h3>
+              <h2 className="text-base font-semibold mb-3">{t('recommendations.logoFonts')}</h2>
               <div className="flex flex-wrap gap-3 mb-6">
                 {recommendFonts.map(family => (
                   <button
@@ -658,7 +692,7 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-              <h3 className="text-base font-semibold mb-3">{t('recommendations.textFonts')}</h3>
+              <h2 className="text-base font-semibold mb-3">{t('recommendations.textFonts')}</h2>
               <div className="flex flex-wrap gap-3 mb-6">
                 {recommendTextFonts.map(family => (
                   <button
@@ -677,7 +711,7 @@ export default function Home() {
 
               <div className="flex flex-col gap-3 max-w-xs">
                 {/* 其他工具页脚区 */}
-                <h3 className="text-base font-semibold">{t('recommendations.otherTools')}</h3>
+                <h2 className="text-base font-semibold">{t('recommendations.otherTools')}</h2>
                 <div className="flex flex-wrap gap-3">
                   {recommendTools.map(tool => (
                     <a
