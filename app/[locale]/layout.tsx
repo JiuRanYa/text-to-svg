@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import { Toaster } from '@/core/ui/sonner'
+import { hasLocale, NextIntlClientProvider } from 'next-intl'
+import { routing } from '@/core/i18n/routing'
+import { notFound } from 'next/navigation'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -14,16 +17,15 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-type LayoutProps = {
-  params: Promise<{
-    slug?: string
-  }>
+interface RootLayoutProps {
+  children: React.ReactNode;
+  params: Promise<{locale: string}>;
 }
 
-export async function generateMetadata({ params }: LayoutProps): Promise<Metadata> {
+export async function generateMetadata({ params }: RootLayoutProps): Promise<Metadata> {
   const resolvedParams = await params
   const baseUrl = 'https://text-to-svg.tool.tokyo'
-  const path = resolvedParams.slug ? `/${resolvedParams.slug}` : ''
+  const path = resolvedParams.locale ? `/${resolvedParams.locale}` : ''
   
   // 始终生成 canonical URL，包括主路由
   const canonicalUrl = `${baseUrl}${path}`
@@ -86,11 +88,14 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
   }
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  params,
+}: RootLayoutProps) {
+  const {locale} = await params
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
   return (
     <html lang="en">
       <head>
@@ -110,7 +115,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <NextIntlClientProvider>
+          {children}
+        </NextIntlClientProvider>
         <Toaster />
       </body>
     </html>
