@@ -10,7 +10,7 @@ import {
 } from '@/core/ui/dropdown-menu'
 import { buttonVariants } from '@/core/ui/button'
 
-export function LanguageSwitch() {
+export default function LanguageSwitch() {
   const router = useRouter()
   const pathname = usePathname()
 
