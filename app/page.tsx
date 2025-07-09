@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { Input } from '@/core/ui/input'
 import { Button } from '@/core/ui/button'
 import { Textarea } from '@/core/ui/textarea'
@@ -353,7 +354,7 @@ export default function Home() {
 
   const renderAnimationSettings = () => (
     <div className="border-t pt-4 mt-4 flex flex-col gap-6">
-      <h4 className="text-sm font-semibold">Animation Settings</h4>
+      <h3 className="text-sm font-semibold">Animation Settings</h3>
       
       <div className="flex items-center justify-between">
         <Label htmlFor="animation-enabled">Enable Animation</Label>
@@ -410,6 +411,13 @@ export default function Home() {
 
   const renderSettings = () => (
     <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-2 mb-4">
+        <Image src="/favicon-32x32.png" alt="Text to svg" width={24} height={24} className="rounded-full" />
+
+        <h1 className="text-xl font-bold">
+          Text to svg
+        </h1>
+      </div>
       <h2 className="text-lg font-bold mb-2">Settings</h2>
       {/* 配置面板内容 */}
       <div className="mb-4">
