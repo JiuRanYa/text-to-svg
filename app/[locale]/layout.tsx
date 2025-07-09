@@ -29,6 +29,17 @@ export async function generateMetadata({ params }: RootLayoutProps): Promise<Met
   
   // 始终生成 canonical URL，包括主路由
   const canonicalUrl = `${baseUrl}${path}`
+
+  // 生成语言替代链接
+  const languages = {
+    'en': 'English',
+    'zh': '中文'
+  }
+  
+  const alternateLanguages = Object.keys(languages).reduce((acc, lang) => {
+    acc[lang] = `${baseUrl}/${lang}`
+    return acc
+  }, {} as Record<string, string>)
   
   return {
     title: 'Google Font to SVG Path Converter | Online Font Vector Generator',
@@ -40,7 +51,8 @@ export async function generateMetadata({ params }: RootLayoutProps): Promise<Met
       }
     },
     alternates: {
-      canonical: canonicalUrl
+      canonical: canonicalUrl,
+      languages: alternateLanguages
     },
     icons: {
       icon: [
@@ -77,8 +89,8 @@ export async function generateMetadata({ params }: RootLayoutProps): Promise<Met
       description: 'Convert Google Fonts to SVG paths with customizable styles, stroke effects, and fill options. Perfect for web design, logo creation, laser cutting, and vector graphics. Free online tool with instant preview.',
       url: canonicalUrl,
       siteName: 'Google Font to SVG Path',
-      locale: 'en_US',
-      type: 'website'
+      locale: resolvedParams.locale === 'zh' ? 'zh_CN' : 'en_US',
+      type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
