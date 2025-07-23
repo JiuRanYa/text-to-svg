@@ -182,7 +182,7 @@ export default function Home() {
   ]
   const recommendTools = [
     {title: 'Personal Blog', href: 'https://jiuran.fun'},
-    {title: 'AI Navigation', href: 'https://nexus.skin'},
+    {title: 'AI Answer generator', href: 'https://aianswergenerate.com'}
   ]
   // 使用 useMemo 缓存字体加载
   const fontUrl = useMemo(() => {
