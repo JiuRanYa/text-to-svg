@@ -17,7 +17,6 @@ export default function sitemap(): Array<ExtendedSitemapEntry> {
     { path: '/tutorials', name: 'Tutorials', priority: 0.8, changeFrequency: 'weekly' as const },
     { path: '/examples', name: 'Examples', priority: 0.8, changeFrequency: 'weekly' as const },
     { path: '/sources', name: 'Sources', priority: 0.8, changeFrequency: 'weekly' as const },
-    { path: '/sanskrit-tattoo', name: 'Sanskrit Tattoo', priority: 0.8, changeFrequency: 'weekly' as const },
     { path: '/about', name: 'About', priority: 0.8, changeFrequency: 'weekly' as const },
   ]
 
