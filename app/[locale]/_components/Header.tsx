@@ -12,7 +12,6 @@ const navigation = [
   { name: 'nav.tutorials', href: '/tutorials' },
   { name: 'nav.examples', href: '/examples' },
   { name: 'nav.fontSources', href: '/sources' },
-  { name: 'nav.sanskritTattoo', href: '/sanskrit-tattoo' },
 ]
 
 export function Header() {
